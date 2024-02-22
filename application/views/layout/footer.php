@@ -6,9 +6,6 @@
 
 			</div>
 			<!-- /Page Wrapper -->
-
-			
-		
         </div>
 		<!-- /Main Wrapper -->
 		
@@ -31,11 +28,6 @@
 		<!-- Custom JS -->
 		<script src="<?php echo base_url(); ?>assets/js/script.js"></script>
 
-
-		
-
-
-
 		<!-- jQuery -->
         <!-- <script src="<?php echo base_url(); ?>assets/js/jquery-3.7.1.min.js"></script> -->
 		
@@ -47,11 +39,6 @@
 
 		<!-- Custom JS -->
 		<!-- <script src="<?php echo base_url(); ?>assets/js/script.js"></script> -->
-
-
-
-
-
     </body>
 
 </html>

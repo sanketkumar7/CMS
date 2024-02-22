@@ -59,6 +59,18 @@
 									<li><a href="invoices-settings.html">Invoices Settings</a></li>
 								</ul>
 							</li>
+							<li class="submenu">
+								<a href="#"><i class="fas fa-clipboard"></i> <span> Academics</span> <span class="menu-arrow"></span></a>
+								<ul>
+									<li class="submenu">
+									<a href="#"><i class="fas fa-clipboard"></i> <span> Marks Upload/View</span> <span class="menu-arrow"></span></a>
+									<ul>
+										<li><a href="<?= base_url('index.php/sop/')?>">CO-Assessment Mapping</a></li>
+										
+									</ul>
+								</li>
+								</ul>
+							</li>
 							<li class="menu-title"> 
 								<span>Management</span>
 							</li>
