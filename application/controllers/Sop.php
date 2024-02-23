@@ -5,11 +5,12 @@ class Sop extends CI_Controller {
 
 //Co-assessment mapping
 	public function index()
-	{  
-        
+	{   $data=array(
+        'lock'=>true
+    );
         $this->load->view('layout/sidebar');
 		$this->load->view('layout/header');
-        $this->load->view('co-assessment-mapping');
+        $this->load->view('co-assessment-mapping',$data);
         $this->load->view('layout/footer');
 	}
 

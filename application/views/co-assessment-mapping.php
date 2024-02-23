@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container" id='mapping_co'>
         <div class="row">
             <div class="col">
                 <div class="card ">
@@ -72,23 +72,44 @@
                 </div>
             </div>
         </div>
-        <div class="row p-3">
-            <table class="table table-striped">
-                <thead class='bg-dark'>
+        <div class="row gx-0" style="margin-top: -2%;">
+            <table class="table table-bordered  border">
+                <thead class='table-dark'>
                     <tr>
-                        <th class="text-light">CourseOutComeShortName</th>
-                        <th class="text-light">Assignment</th>
-                        <th class="text-light">Mid-Semester Test-1</th>
-                        <th class="text-light">Quiz</th>
-                        <th class="text-light">Surprise Test</th>
-                        <th class="text-light">Mid-Semester Test-2</th>
-                        <th class="text-light">External Theory</th>
+                        <th>CourseOutComeShortName</th>
+                        <th>Assignment</th>
+                        <th>Mid-Semester Test-1</th>
+                        <th>Quiz</th>
+                        <th>Surprise Test</th>
+                        <th>Mid-Semester Test-2</th>
+                        <th>External Theory</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    <?php for($i=1;$i<6;$i++){?>
+                    <tr>
+                        <td>CO<?=$i?></td>
+                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
+                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
+                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
+                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
+                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
+                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
+                    </tr>
+                    <?php } ?>
+                    
                 </tbody>
+                <tfoot>
+                    <tr></tr>
+                </tfoot>
             </table>
+            <div class="row g-0 my-3 ">
+                <div class="col text-end">
+                <button class="btn btn-danger">LOCK</button>
+            <button class="btn btn-danger ms-2">APPLY CHANGES</button>
+                </div>
+            </div>
+           
         </div>
     </div>
 </div>
