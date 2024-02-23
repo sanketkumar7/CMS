@@ -60,13 +60,12 @@
 								</ul>
 							</li>
 							<li class="submenu">
-								<a href="#"><i class="fas fa-clipboard"></i> <span> Academics</span> <span class="menu-arrow"></span></a>
+								<a href="#"><i class="fas fa-book-open"></i> <span> Academics</span> <span class="menu-arrow"></span></a>
 								<ul>
 									<li class="submenu">
-									<a href="#"><i class="fas fa-clipboard"></i> <span> Marks Upload/View</span> <span class="menu-arrow"></span></a>
+									<a href="#"><i class="fas fa-cloud-upload-alt"></i> <span> Marks Upload/View</span> <span class="menu-arrow"></span></a>
 									<ul>
-										<li><a href="<?= base_url('index.php/sop/')?>">CO-Assessment Mapping</a></li>
-										
+										<li class='text-wrap'><a href="<?= base_url('index.php/sop/')?>"><span>CO-Assessment Mapping</span></a></li>
 									</ul>
 								</li>
 								</ul>
