@@ -1,4 +1,4 @@
-<div class="page-wrapper">
+<div class="page-wrapper" style="background: white;">
     <div class="content">
         <!-- Page Header -->
         <div class="page-header">
@@ -13,23 +13,23 @@
             </div>
         </div>
     </div>
+    <form action="" onsubmit="event.preventDefault();">
     <div class="container ms-5 row">
         <div class="col-3">
             <div class="form-group">
                 <label for="departments">Choose Institute/Department:</label>
                 <select class="form-control" name="departments" id="departments" onchange="select_programs_list(this.value)">
                 <option value="--">--</option>
-                    <option value="engineering">Engineering</option>
-                    <option value="computer_science">Computer Science</option>
-                    <option value="biology">Biology</option>
-                    <option value="business">Business</option>
+                <?php foreach ($departments as $name=>$department) {?>
+                        <option value="<?=$department['code']?>"><?=$department['name']?></option>
+                    <?php }?>
                 </select>
             </div>
         </div>
         <div class="col-3" id='programs'>
             <div class="form-group">
                 <label for="prog">Program:</label>
-                <select class="form-control" name="programs" id="prog" onchange='select_courses_list(this.value)'>
+                <select class="form-control" name="program" id="prog" onchange='select_courses_list(this.value)'>
                     <option value="--">--</option>
                 </select>
             </div>
@@ -48,69 +48,19 @@
                 </select>
             </div>
         </div>
-        <div class="col-3 d-flex align-items-center mt-4">
-            <div class="form-group">
-                <button class="btn btn-danger" onclick='get_co_mapping()'>PROCEED</button>
-                <button class="btn btn-light ms-2">RESET</button>
+        <div class="col-3 d-flex align-items-center mt-2">
+            <div>
+                <button class="btn btn-outline-danger" onclick='get_co_mapping()'>PROCEED</button>
+                <button type="reset" class="btn btn-light" onclick='reset_first_field()'>RESET</button>
             </div>
         </div>
     </div>
-    <div class="container" id='mapping_co'>
-        <div class="row">
-            <div class="col">
-                <div class="card ">
-                    <div class="card-body" style="background:yellow;">
-                        <ul class="fw-bold">
-                            <li>Instructions for CO mapping with assessments:</li>
-                        </ul>
-                        <ul class="ms-3">
-                            <li>- Assignment: should be mapped only to higher order COS</li>
-                            <li>- Quiz/MCQ based test/Surprise test/any other limited-time tests: should be mapped with basic level COS</li>
-                            <li>- MST's: should not be mapped with the highest order level.</li>
-                        </ul>   
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row gx-0" style="margin-top: -2%;">
-            <table class="table table-bordered  border">
-                <thead class='table-dark'>
-                    <tr>
-                        <th>CourseOutComeShortName</th>
-                        <th>Assignment</th>
-                        <th>Mid-Semester Test-1</th>
-                        <th>Quiz</th>
-                        <th>Surprise Test</th>
-                        <th>Mid-Semester Test-2</th>
-                        <th>External Theory</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php for($i=1;$i<6;$i++){?>
-                    <tr>
-                        <td>CO<?=$i?></td>
-                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
-                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
-                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
-                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
-                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
-                        <td><input type="checkbox" name="" id="" class="form-check-input" <?php if($lock??'') echo "disabled"?>></td>
-                    </tr>
-                    <?php } ?>
-                    
-                </tbody>
-                <tfoot>
-                    <tr></tr>
-                </tfoot>
-            </table>
-            <div class="row g-0 my-3 ">
-                <div class="col text-end">
-                <button class="btn btn-danger">LOCK</button>
-            <button class="btn btn-danger ms-2">APPLY CHANGES</button>
-                </div>
-            </div>
-           
-        </div>
+    </form>
+    <div class="container" id='co_mapping'>
+        
+    </div>
+    <div class="container" id="co_mark_mapping">
+        
     </div>
 </div>
 
@@ -135,9 +85,38 @@
     }
 
     function get_co_mapping(){
-        var course=document.getElementById('course').value;
-        if(course !='--'){
-            // retrieve the co_mapping
+        var course_code=document.getElementById('course').value;
+        if(course_code !='--'){
+            $.post('<?=base_url("index.php/sop/get_co_mapping")?>', {course_code:course_code }, function(response) { 
+                var jsonResponse = JSON.parse(response);
+                if (jsonResponse.details_load){
+                    $('#co_mapping').html(jsonResponse.co_html);
+                    $('#co_mark_mapping').html(jsonResponse.co_mark_html);
+                }
+            });
         }
+        else{
+            alert('Please select the Course.');
+        }
+    }
+    function reset_first_field(){
+        $('#co_mapping').empty();
+        $('#co_mark_mapping').empty();
+        $('#programs').html(`<div class="form-group">
+                <label for="prog">Program:</label>
+                <select class="form-control" name="program" id="prog" onchange='select_courses_list(this.value)'>
+                    <option value="--">--</option>
+                </select>
+            </div>`);
+        $('#courses').html(`
+            <div class="form-group">
+                <label for="prog">Course:</label>
+                <select class="form-control" name="program" id="prog" onchange='select_courses_list(this.value)'>
+                    <option value="--">--</option>
+                </select>
+            </div>
+        `);
+
+
     }
 </script>
