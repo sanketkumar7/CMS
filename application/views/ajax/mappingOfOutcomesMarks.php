@@ -23,7 +23,7 @@
                                         <tr>
                                             <td><?=++$counter;?></td>
                                             <td><?=$row['unit']?></td>
-                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_mid_sem_test_1']?>"  name=<?=$row['unit']."_mid_sem_test_1"?> class="form-control" required></td>
+                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_mid_sem_test_1']?>"  value="<?=$co_marks[$row['unit']]['mid_sem_test_1']??''?>" name=<?=$row['unit']."_mid_sem_test_1"?> class="form-control" required></td>
                                         </tr>
                                         <?php } 
                                             }?>   
@@ -55,7 +55,7 @@
                                         <tr>
                                             <td><?=++$counter;?></td>
                                             <td><?=$row['unit']?></td>
-                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_quiz']?>" name=<?=$row['unit']."_quiz"?> class="form-control" required></td>
+                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_quiz']?>" value="<?=$co_marks[$row['unit']]['quiz']??''?>" name=<?=$row['unit']."_quiz"?> class="form-control" required></td>
                                         </tr>
                                         <?php } 
                                             }?>
@@ -87,7 +87,7 @@
                                         <tr>
                                             <td><?=++$counter;?></td>
                                             <td><?=$row['unit']?></td>
-                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_surprise_test']?>" name=<?=$row['unit']."_surprise_test"?> class="form-control" required></td>
+                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_surprise_test']?>" value="<?=$co_marks[$row['unit']]['surprise_test']??''?>" name=<?=$row['unit']."_surprise_test"?> class="form-control" required></td>
                                         </tr>
                                         <?php } 
                                             }?>
@@ -119,7 +119,7 @@
                                         <tr>
                                             <td><?=++$counter;?></td>
                                             <td><?=$row['unit']?></td>
-                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_external_theory']?>" name=<?=$row['unit']."_external_theory"?> class="form-control" required></td>
+                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_external_theory']?>" value="<?=$co_marks[$row['unit']]['external_theory']??''?>" name=<?=$row['unit']."_external_theory"?> class="form-control" required></td>
                                         </tr>
                                         <?php } 
                                             }?>
@@ -151,7 +151,7 @@
                                         <tr>
                                             <td><?=++$counter;?></td>
                                             <td><?=$row['unit']?></td>
-                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_mid_sem_test_2']?>" name=<?=$row['unit']."_mid_sem_test_2"?> class="form-control" required></td>
+                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_mid_sem_test_2']?>" value="<?=$co_marks[$row['unit']]['mid_sem_test_2']??''?>" name=<?=$row['unit']."_mid_sem_test_2"?> class="form-control" required></td>
                                         </tr>
                                         <?php } 
                                             }?>
@@ -183,7 +183,7 @@
                                         <tr>
                                             <td><?=++$counter;?></td>
                                             <td><?=$row['unit']?></td>
-                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_assignment']?>" name=<?=$row['unit']."_assignment"?> class="form-control" required></td>
+                                            <td><input type="text" min=1 max="<?= $co_default['max_marks_assignment']?>" value="<?=$co_marks[$row['unit']]['assignment']??''?>" name=<?=$row['unit']."_assignment"?> class="form-control" required></td>
                                         </tr>
                                         <?php } 
                                             }?>
@@ -243,6 +243,29 @@
                 $.ajax({
                     
                     url: "<?=base_url('index.php/sop/set_co_mapping_lock/') ?>",
+                            method: 'POST',
+                            data:{
+                                course_code:"<?=$course_code?>"
+                            },
+                            success: function(response) {
+                                var jsonResponse = JSON.parse(response);
+                                if (jsonResponse.details_load){
+                                    alert('Course Outcomes Locked.')
+                                    $('#co_mapping').html(jsonResponse.co_html);
+                                    $('#co_mark_mapping').html(jsonResponse.co_mark_html);
+                                }else{
+                                    alert('Error occur.');
+                                }
+                            },
+                            error: function(xhr, textStatus, errorThrown) {
+                            }
+                        
+                });
+            }
+            function js_set_co_mapping_mark_lock(){
+                $.ajax({
+                    
+                    url: "<?=base_url('index.php/sop/set_co_mapping_mark_lock/') ?>",
                             method: 'POST',
                             data:{
                                 course_code:"<?=$course_code?>"

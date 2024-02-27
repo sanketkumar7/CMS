@@ -50,7 +50,7 @@
                 </table>
                 <div class="row g-0 my-3 ">
                     <div class="col text-end">
-                        <?php if($co_default['co_mapping_lock']){?>
+                        <?php if($co_default['co_mapping_lock']??''){?>
                             <div class="row">
                                     <div class="col ms-auto mt-2">
                                         <h5>LOCKED</h5>

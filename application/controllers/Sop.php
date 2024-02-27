@@ -18,11 +18,11 @@ class Sop extends CI_Controller {
             'departments'=>$departments,
         );
 
-//marks mapping:
-        $course_code='CE101-C3';
-        $co_mapping_rows=$this->Sop_model->get_co_mapping_with_conditions_sorted('co_mapping',array('course_code'=>$course_code));
-        $co_mapping_default=$this->Sop_model->get_rows_with_conditions('co_mapping_default',array('course_code'=>$course_code));
-        $data['co']=$co_mapping_rows;
+        // //marks mapping:
+        // $course_code='CE101-C3';
+        // $co_mapping_rows=$this->Sop_model->get_co_mapping_with_conditions_sorted('co_mapping',array('course_code'=>$course_code));
+        // $co_mapping_default=$this->Sop_model->get_rows_with_conditions('co_mapping_default',array('course_code'=>$course_code));
+        // $data['co']=$co_mapping_rows;
         $this->load->view('layout/sidebar');
 		$this->load->view('layout/header');
         $this->load->view('co-assessment-mapping',$data);
@@ -36,6 +36,7 @@ class Sop extends CI_Controller {
 		$this->load->view('AdminDashboard');
 		$this->load->view('layout/footer');
 	}
+
 // Ajax
     public function select_programs_list(){
         $institute_code=$this->input->post('institute');
@@ -43,7 +44,7 @@ class Sop extends CI_Controller {
         foreach($program_rows as $program){
             $programs[$program['code']]=$program['name'];
         }
-        
+
         $response=array(
             'programs_html'=>$this->load->view('ajax/programs',array('programs'=>$programs),TRUE),
             'details_load'=>true
@@ -55,7 +56,7 @@ class Sop extends CI_Controller {
         $program_code=$this->input->post('program');
         $course_rows=$this->Sop_model->get_rows_with_conditions("courses",array('program_code'=>$program_code));
         foreach($course_rows as $course){
-            $courses[$course['code']]=$course['name'];
+            $courses[$course['code']] = $course['name'];
         }
         $response=array(
             'details_load'=>true,
@@ -67,11 +68,27 @@ class Sop extends CI_Controller {
     public function get_co_mapping(){
         $course_code=$this->input->post('course_code');
         $co_mapping_rows=$this->Sop_model->get_rows_with_conditions('co_mapping',array('course_code'=>$course_code));
-        $co_mapping_default=$this->Sop_model->get_rows_with_conditions('co_mapping_default',array('course_code'=>$course_code))[0];
+        // $units=array_combine(
+        //     array_column($co_mapping_rows, 'unit'),
+        //     array_map(function($row) {
+        //         return ['quiz' => $row['quiz']];
+        //     }, $co_mapping_rows)
+        // );
+        // print_r($units);
+        // die;
+        
+        $co_mapping_default=$this->Sop_model->get_or_create($table='co_mapping_default',$criteria=array('course_code'=>$course_code))??array();
+        $co_mapping_marks=$this->Sop_model->get_rows_with_conditions('co_mapping_marks',array('course_code'=>$course_code));
+        $grouped_co_marks=array();
+        if(!empty($co_mapping_marks))
+        foreach($co_mapping_marks as $co_row){
+            $grouped_co_marks[$co_row['unit']]=$co_row;
+        }
         $data=array(
             'co_default'=>$co_mapping_default,
             'co'=>$co_mapping_rows,
-            'course_code'=>$course_code
+            'co_marks'=>$grouped_co_marks,
+            'course_code'=>$course_code,
         );
         $response=array(
             'details_load'=>true,
@@ -80,6 +97,7 @@ class Sop extends CI_Controller {
         );
         echo json_encode($response);
     }
+
     public function set_co_mapping($course_code){
         $updated=false;
         $tasks = [
@@ -95,7 +113,7 @@ class Sop extends CI_Controller {
         foreach($units as $unit){
             $data=array();
             foreach($tasks as $task){
-                $data[$task]=($formData["$unit" . "_" . "$task"]??0=='on'?1:0);
+                $data[$task]=($formData["$unit" . "_" . "$task"]??0 =='on'?1:0);
             }
             $conditions=array(
                 'course_code'=>$course_code,
@@ -107,9 +125,16 @@ class Sop extends CI_Controller {
         if($updated){
             $co_mapping_rows=$this->Sop_model->get_rows_with_conditions('co_mapping',array('course_code'=>$course_code));
             $co_mapping_default=$this->Sop_model->get_rows_with_conditions('co_mapping_default',array('course_code'=>$course_code))[0];
+            $co_mapping_marks=$this->Sop_model->get_rows_with_conditions('co_mapping_marks',array('course_code'=>$course_code));
+            $grouped_co_marks=array();
+            if(!empty($co_mapping_marks))
+            foreach($co_mapping_marks as $co_row){
+                $grouped_co_marks[$co_row['unit']]=$co_row;
+            }
             $data=array(
                 'co_default'=>$co_mapping_default,
                 'co'=>$co_mapping_rows,
+                'co_marks'=>$grouped_co_marks,
                 'course_code'=>$course_code
             );
             $response=array(
@@ -124,20 +149,6 @@ class Sop extends CI_Controller {
         }
         
         echo json_encode($response);    
-    }
-    
-    public function set_co_mapping_lock(){
-        $course_code=$this->input->post('course_code');
-        $conditions=array(
-            'course_code'=>$course_code,
-        );
-        $updated=$this->Sop_model->update_row_with_conditions('co_mapping_default',$conditions,array('co_mapping_lock'=>1));
-        if($updated){
-            $this->get_co_mapping($course_code);
-        }
-        else{
-            echo json_encode(array('details_load'=>false));
-        }
     }
 
     public function set_co_mapping_mark($course_code){
@@ -179,7 +190,8 @@ class Sop extends CI_Controller {
                     'course_code'=>$course_code,
                     'unit'=>$unit,
                 );
-                $updated=$this->Sop_model->update_or_insert_row_with_conditions('co_mapping',$conditions,$data);
+                if($data) 
+                    $updated=$this->Sop_model->update_or_insert_row_with_conditions('co_mapping_marks',$conditions,$data);
                 if(!$updated) break;
             }
             $response=array(
@@ -195,6 +207,68 @@ class Sop extends CI_Controller {
         }
         echo json_encode($response);
     }
+    
+    public function set_co_mapping_lock(){
+        $course_code=$this->input->post('course_code');
+        $conditions=array(
+            'course_code'=>$course_code,
+        );
+        $updated=$this->Sop_model->update_row_with_conditions('co_mapping_default',$conditions,array('co_mapping_lock'=>1));
+        if($updated){
+            $this->get_co_mapping($course_code);
+        }
+        else{
+            echo json_encode(array('details_load'=>false));
+        }
+    }
+    
+    public function set_co_mapping_mark_lock(){
+        $course_code=$this->input->post('course_code');
+        $conditions=array(
+            'course_code'=>$course_code,
+            'co_mapping_lock'=>1
+        );
 
+        $co_mapping_lock=$this->Sop_model->find_record('co_mapping_default',$conditions);
+        if($co_mapping_lock){
+            $data=array('co_marks_mapping_lock'=>1);
+            
+        }
+    }
+
+
+    
+    
+
+
+
+
+
+
+    public function practice(){
+        $course_code='CE101-C3';
+            $query = $this->db->get_where('co_mapping', array('course_code' => $course_code));
+            if ($query->num_rows() > 0) {
+                $units = $query->result_array();
+                $units = array_column($units, 'unit');
+                print_r($units);
+                print("<br><br>");
+            } 
+
+          
+                $this->db->select('unit');
+                $this->db->from('co_mapping');
+                $this->db->where('course_code',$course_code);
+                $record=$this->db->get()->result_array();
+                print_r($record);
+                print("<br><br>");
+                print_r(array_values($record));
+                print_r(array_keys($record));
+                
+                
+
+    }
+
+    
 }
 ?>
