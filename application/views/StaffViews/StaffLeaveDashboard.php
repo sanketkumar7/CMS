@@ -408,13 +408,13 @@
 								<a href="sports.html"><i class="fas fa-baseball-ball"></i> <span>Sports</span></a>
 							</li> -->
 							<li> 
-								<a href="<?php echo base_url()?>StaffController/StaffDashboard"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a>
+								<a href="<?php echo base_url()?>index.php/StaffController/StaffDashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
 							</li>
 						<li class="active"> 
-								<a href="<?php echo base_url()?>StaffController/StaffLeaveDashboard"><i class="fa-solid fa-suitcase"></i> <span>Leave</span></a>
+								<a href="<?php echo base_url()?>index.php/StaffController/StaffLeaveDashboard"><i class="fa-solid fa-suitcase"></i> <span>Leave</span></a>
 							</li>
 							<li class="">
-                            <a href="<?php echo base_url()?>StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
+                            <a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
                         </li>
 							<!-- <li> 
 								<a href="<?php echo base_url()?>TransportController/index"><i class="fas fa-bus"></i> <span>Transport</span></a>

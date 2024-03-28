@@ -404,16 +404,16 @@
 								<a href="hostel.html"><i class="fas fa-hotel"></i> <span>Hostel</span></a>
 							</li> -->
                             <li class=""> 
-                            <a href="<?php echo base_url()?>StaffController/AdminDashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+						<a href="<?php echo base_url()?>index.php/StaffController/AdminDashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
 							</li>
 						<li class="active">  
-								<a href="<?php echo base_url()?>TransportController/index"><i class="fas fa-bus"></i> <span>Transport</span></a>
+								<a href="<?php echo base_url()?>index.php/TransportController/index"><i class="fas fa-bus"></i> <span>Transport</span></a>
 							</li>
 							<li class="">
-                            <a href="<?php echo base_url()?>StaffController/AdminStaffDashboard"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
+                            <a href="<?php echo base_url()?>index.php/StaffController/AdminStaffDashboard"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
                         </li>
-                        <li class="">
-                        <a href="<?php echo base_url()?>StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
+							<li class="">
+                            <a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
                         </li>
                     </ul>
                 </div>
