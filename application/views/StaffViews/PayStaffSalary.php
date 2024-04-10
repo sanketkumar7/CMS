@@ -335,17 +335,17 @@
                         <li>
                             <a href="hostel.html"><i class="fas fa-hotel"></i> <span>Hostel</span></a>
                         </li> -->
-                        <li class=""> 
-							<a href="<?php echo base_url()?>index.php/StaffController/AdminDashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
-							</li>
-						<li class="">  
-								<a href="<?php echo base_url()?>index.php/TransportController/index"><i class="fas fa-bus"></i> <span>Transport</span></a>
-							</li>
-							<li class="active">
-                            <a href="<?php echo base_url()?>index.php/StaffController/AdminStaffDashboard"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
+                        <li class="">
+                            <a href="<?php echo base_url() ?>index.php/StaffController/AdminDashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
                         </li>
-						<li class="">
-						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
+                        <li class="">
+                            <a href="<?php echo base_url() ?>index.php/TransportController/index"><i class="fas fa-bus"></i> <span>Transport</span></a>
+                        </li>
+                        <li class="active">
+                            <a href="<?php echo base_url() ?>index.php/StaffController/AdminStaffDashboard"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
+                        </li>
+                        <li class="">
+                            <a href="<?php echo base_url() ?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
                         </li>
                     </ul>
                 </div>
@@ -359,17 +359,17 @@
 
                 <!-- Page Header -->
                 <div class="page-header">
-						<div class="row align-items-center">
-							<div class="col">
-								<h3 class="page-title">Salary</h3>
-								<ul class="breadcrumb">
-									<li><a href="AdminStaffDashboard">Staff</a></li>
-									<li><a href="AdminSalaryDashboard">/ Salary</a></li>
-									<li class="active">/ Pay Salary</li>
-								</ul>
-							</div>
-						</div>
-					</div>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h3 class="page-title">Salary</h3>
+                            <ul class="breadcrumb">
+                                <li><a href="AdminStaffDashboard">Staff</a></li>
+                                <li><a href="AdminSalaryDashboard">/ Salary</a></li>
+                                <li class="active">/ Pay Salary</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="student-group-form">
                     <form action="PayStaffSalary" method="post">
                         <div class="row">
@@ -387,12 +387,12 @@
                             </div>
                             <div class="col-lg-2 col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="month" id="month" placeholder="Month eg. January">
+                                    <input type="text" class="form-control" name="month" id="month" placeholder="Month eg. January" oninput="checkcurrentmonth();">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-md-6 d-none">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="date" placeholder="Enter Month ">
+                                    <input type="text" class="form-control" name="date" placeholder="Enter Month" >
                                 </div>
                             </div>
                             <div class="col-lg-3 text-end">
@@ -408,8 +408,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                    <button type="submit" class="btn btn-primary" id="paybutton">Pay </button>
-                                    <button class="btn btn-primary" id="Clearbutton" onclick="cleardata(event)">Clear </button>
+                                <button type="submit" class="btn btn-primary" id="paybutton">Pay </button>
+                                <button class="btn btn-primary" id="Clearbutton" onclick="cleardata(event)">Clear </button>
                             </div>
 
                         </div>
@@ -439,12 +439,15 @@
     <!-- Datatables JS -->
     <script src="<?php echo base_url() ?>assets/plugins/datatables/datatables.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.min.js"></script>
-	<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.js"></script>
+    <script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.js"></script>
+    <!-- Include Moment.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
     <!-- Custom JS -->
     <script src="<?php echo base_url() ?>assets/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-         document.getElementById('paybutton').disabled = true;
+        document.getElementById('paybutton').disabled = true;
         function fetchstaffdata() {
             document.getElementById('paybutton').disabled = true;
             var staffid = document.getElementById('staffid').value.trim();
@@ -460,15 +463,15 @@
                         if (data.message == "No Staff Found") {
                             document.getElementById('errormessage').style.display = 'block';
                             document.getElementById('errormessage').innerText = "No Staff found";
-                            document.getElementById('staffname').value="";
-                            document.getElementById('month').setAttribute('readonly',true);
-                            document.getElementById('CalculateSalarybutton').setAttribute('disabled',true);
+                            document.getElementById('staffname').value = "";
+                            document.getElementById('month').setAttribute('readonly', true);
+                            document.getElementById('CalculateSalarybutton').setAttribute('disabled', true);
                         } else {
                             document.getElementById('errormessage').style.display = 'none';
                             document.getElementById('staffname').value = data.staffname;
-                            document.getElementById('salary').value="";
-                            document.getElementById('paidmessage').style.display="none";
-                            document.getElementById('nodatafoundmessaeg').style.display="none";
+                            document.getElementById('salary').value = "";
+                            document.getElementById('paidmessage').style.display = "none";
+                            document.getElementById('nodatafoundmessaeg').style.display = "none";
                             document.getElementById('CalculateSalarybutton').removeAttribute('disabled');
                             document.getElementById('month').removeAttribute('readonly');
                         }
@@ -476,20 +479,34 @@
                     .catch(error => {
                         console.error('Fetch error:', error);
                     });
-            }
-            else if(staffid=="")
-            {
-                document.getElementById('errormessage').style.display='none';
-                document.getElementById('staffname').value="";
-            }
-            else{
-                document.getElementById('paybutton').disabled=true;
-                document.getElementById('staffname').value="";
+            } else if (staffid == "") {
+                document.getElementById('errormessage').style.display = 'none';
+                document.getElementById('staffname').value = "";
+            } else {
+                document.getElementById('paybutton').disabled = true;
+                document.getElementById('staffname').value = "";
 
             }
         }
 
-        function calculatesalary() {
+        function checkcurrentmonth()
+        {
+        var month = document.getElementById('month').value.trim();
+        var todaydate=moment();
+        var currmonth= todaydate.format('MMMM');
+        if(month.toLowerCase()==currmonth.toLowerCase())
+        {
+            document.getElementById("CalculateSalarybutton").disabled=true;
+            document.getElementById("paidmessage").innerHTML="Cant Pay Salary for Current month";
+            document.getElementById("paidmessage").style.display="block";
+        }
+        else{
+            document.getElementById("CalculateSalarybutton").disabled=false;
+            document.getElementById("paidmessage").style.display="none";
+        }
+        }
+   
+            function calculatesalary() {
             var staffid = document.getElementById('staffid').value;
             var month = document.getElementById('month').value;
             const url = `CalculateStaffSalary?staffid=${staffid}&month=${month}`;
@@ -502,21 +519,21 @@
                 })
                 .then(data => {
                     if (data.message == "Salary Already Paid For the Month") {
-                       document.getElementById('paidmessage').style.display='block';
-                       document.getElementById('nodatafoundmessaeg').style.display='none';
+                        document.getElementById('paidmessage').style.display = 'block';
+                        document.getElementById('nodatafoundmessaeg').style.display = 'none';
 
                     } else {
                         if (data.count != 0) {
                             var salary = 800 * data.count;
                             document.getElementById('salary').value = salary;
                             document.getElementById('paybutton').disabled = false;
-                            document.getElementById('month').setAttribute('readonly',true);
-                            document.getElementById('nodatafoundmessaeg').style.display='none';
+                            document.getElementById('month').setAttribute('readonly', true);
+                            document.getElementById('nodatafoundmessaeg').style.display = 'none';
                         } else {
                             document.getElementById('salary').value = 0;
-                            document.getElementById('nodatafoundmessaeg').style.display='block';
-                            document.getElementById('paidmessage').style.display='none';
-                            document.getElementById('paybutton').disabled=true;
+                            document.getElementById('nodatafoundmessaeg').style.display = 'block';
+                            document.getElementById('paidmessage').style.display = 'none';
+                            document.getElementById('paybutton').disabled = true;
                         }
                     }
 
@@ -525,23 +542,26 @@
                     console.error('There was a problem with the fetch operation:', error);
                 });
         }
-        function cleardata(event)
-        {
+    
+
+
+        function cleardata(event) {
             event.preventDefault();
-            document.getElementById('staffid').value='';
-            document.getElementById('staffname').value='';
-            document.getElementById('month').value='';
-            document.getElementById('salary').value='';
-            document.getElementById('errormessage').style.display='none';
-            document.getElementById('paidmessage').style.display='none'
-            document.getElementById('paybutton').disabled=true;
+            document.getElementById('staffid').value = '';
+            document.getElementById('staffname').value = '';
+            document.getElementById('month').value = '';
+            document.getElementById('salary').value = '';
+            document.getElementById('errormessage').style.display = 'none';
+            document.getElementById('paidmessage').style.display = 'none'
+            document.getElementById('paybutton').disabled = true;
             document.getElementById('month').removeAttribute('readonly');
-            document.getElementById('nodatafoundmessaeg').style.display='none';
+            document.getElementById('nodatafoundmessaeg').style.display = 'none';
         }
         document.getElementById('CalculateSalarybutton').addEventListener('click', function(event) {
-            event.preventDefault(); 
-            calculatesalary(); 
+            event.preventDefault();
+            calculatesalary();
         });
+   
     </script>
 
 </body>

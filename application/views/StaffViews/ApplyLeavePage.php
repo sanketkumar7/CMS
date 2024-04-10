@@ -333,17 +333,17 @@
 						<li>
 							<a href="hostel.html"><i class="fas fa-hotel"></i> <span>Hostel</span></a>
 						</li> -->
-						<li class=""> 
-								<a href="<?php echo base_url()?>StaffController/StaffDashboard"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a>
-							</li>
-						<li class="active"> 
-								<a href="<?php echo base_url()?>StaffController/StaffLeaveDashboard"><i class="fa-solid fa-suitcase"></i> <span>Leave</span></a>
-							</li>
-							<li class="">
-                            <a href="<?php echo base_url()?>StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
-                        </li>
-							<!-- <li class="active">
-                            <a href="<?php echo base_url()?>StaffController/index"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
+						<li class="">
+							<a href="<?php echo base_url() ?>StaffController/StaffDashboard"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a>
+						</li>
+						<li class="active">
+							<a href="<?php echo base_url() ?>StaffController/StaffLeaveDashboard"><i class="fa-solid fa-suitcase"></i> <span>Leave</span></a>
+						</li>
+						<li class="">
+							<a href="<?php echo base_url() ?>StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
+						</li>
+						<!-- <li class="active">
+                            <a href="<?php echo base_url() ?>StaffController/index"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
                         </li> -->
 						<!-- <li class="menu-title">
 							<span>UI Interface</span>
@@ -545,6 +545,7 @@
 												<input type="date" class="form-control " id="LeaveDate" placeholder="dd-mm-yyyy" name="leavedate" onchange="checkifleavealreadytakenforthatday();checkdatevalidity();">
 												<p id="daterromessage" class="text-danger" style="font-size:0.7rem;display:none">Already Taken Leave on this Date</p>
 												<p id="leavedatevalidityrromessage" class="text-danger" style="font-size:0.7rem;display:none">Please Select Valid Date</p>
+												<p id="daysunday" class="text-danger" style="font-size: 0.7rem;display:none;">Cant apply for leave on Sunday</p>
 												<div class="invalid-feedback" style="display:none;" id="LeaveDate_errormessage">
 													Leave Date is Required.
 												</div>
@@ -690,15 +691,21 @@
 			var fromDateInput = document.getElementById("fromdate").value;
 			var toDateInput = document.getElementById("todate").value;
 			var numberOfDaysInput = document.getElementById("numberofdays");
+			var sundaycount = 0;
 
 			if (fromDateInput && toDateInput) {
 				var fromDate = new Date(fromDateInput);
 				var toDate = new Date(toDateInput);
-
+				for (let currentDate = new Date(fromDate); currentDate <= toDate; currentDate.setDate(currentDate.getDate() + 1)) {
+				if (currentDate.getDay() === 0) {
+					sundaycount++;
+					console.log(sundaycount);
+				}
+			}
 				if (!isNaN(fromDate) && !isNaN(toDate)) {
 					var diffInMilliseconds = toDate - fromDate;
 					var diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
-					numberOfDaysInput.value = Math.abs(Math.round(diffInDays));
+					numberOfDaysInput.value = Math.abs(Math.round(diffInDays)+1-sundaycount);
 					if (numberOfDaysInput.value > parseInt(document.getElementById('reaminingleavecount').value)) {
 						document.getElementById('submitbutton').setAttribute('disabled', 'true');
 					} else {
@@ -721,6 +728,7 @@
 				document.getElementById('submitbutton').removeAttribute('disabled');
 			}
 		}
+
 		function toggleleavespan() {
 			Type = document.getElementById('LeaveType').value;
 			if (Type == "Casual Leave" || Type == "Sick Leave") {
@@ -825,23 +833,32 @@
 		function checkifleavealreadytakenforthatday() {
 			datevalue = document.getElementById('LeaveDate').value;
 			leavetype = document.getElementById('LeaveType').value;
-			fetch(`CheckLeaveOnDate?date=${datevalue} && LeaveType=${leavetype}`)
-				.then(response => {
-					if (!response.ok) {
-						throw new Error('Network response was not ok');
-					}
-					return response.json();
-				})
-				.then(response => {
-					if (response.message == "Taken") {
-						document.getElementById('daterromessage').style.display = "block";
-						document.getElementById('submitbutton').setAttribute('disabled', true);
-					} else {
-						document.getElementById('daterromessage').style.display = 'none';
-					}
-				})
+			let selectedDate = new Date(datevalue);
+			if (selectedDate.getDay() === 0) {
+				document.getElementById('daysunday').style.display = 'block';
+				document.getElementById('submitbutton').disabled = true;
+			} else {
+				document.getElementById('daysunday').style.display = 'none';
+				fetch(`CheckLeaveOnDate?date=${datevalue} && LeaveType=${leavetype}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error('Network response was not ok');
+						}
+						return response.json();
+					})
+					.then(response => {
+						if (response.message == "Taken") {
+							document.getElementById('daterromessage').style.display = "block";
+							document.getElementById('submitbutton').setAttribute('disabled', true);
+						} else {
+							document.getElementById('daterromessage').style.display = 'none';
+						}
+					})
+			}
+
 		}
 
+		
 		function checkifleavealreadytakenfortodateandfromdate() {
 			fromdate = document.getElementById('fromdate').value;
 			todate = document.getElementById('todate').value;
@@ -868,7 +885,6 @@
 				return;
 			}
 		}
-
 		function checkdatevalidity() {
 			if (document.getElementById('LeaveDateContainer').style.display != 'none') {
 				let leavedate = new Date(document.getElementById('LeaveDate').value);
@@ -893,12 +909,12 @@
 					document.getElementById('Todatevalidityrromessage').style.display = 'block';
 					document.getElementById('submitbutton').disabled = true;
 					document.getElementById('leavedatevalidityrromessage').style.display = 'none';
-				} else if (todate < todaydate) {
+				} else if (todate < todaydate || todate<fromdate) {
 					document.getElementById('Todatevalidityrromessage').style.display = 'block';
 					document.getElementById('submitbutton').disabled = true;
 					document.getElementById('leavedatevalidityrromessage').style.display = 'none';
 					document.getElementById('Fromdatevalidityrromessage').style.display = 'none';
-				} else if (fromdate < todaydate) {
+				} else if (fromdate < todaydate || fromdate>todate) {
 					document.getElementById('Fromdatevalidityrromessage').style.display = 'block';
 					document.getElementById('submitbutton').disabled = true;
 					document.getElementById('leavedatevalidityrromessage').style.display = 'none';

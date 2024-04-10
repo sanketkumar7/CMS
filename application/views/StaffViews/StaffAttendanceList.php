@@ -561,7 +561,7 @@
         window.onload = function() {
             var currentTime = new Date();
             var hours = currentTime.getHours();
-            if (hours >=10 && hours<=23) {
+            if (hours >=20 && hours<=23) {
               document.getElementById('MarkAttendanceButton').removeAttribute('disabled');
             }
         };

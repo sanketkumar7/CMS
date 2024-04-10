@@ -533,7 +533,7 @@
 														</div>
 					
 													</td>
-													<td><button class="btn" onclick="fetchstaffdetails('<?php echo $data->staffid; ?>'); previewDetail();"><i class="feather-eye"></i></button></td>
+													<td><button class="btn" onclick="fetchstaffdetails('<?php echo $data->id; ?>'); previewDetail();"><i class="feather-eye"></i></button></td>
 												</tr>
 											<?php } ?>
 										</tbody>
@@ -586,33 +586,33 @@
                             </div>
                             <div class="personal-activity">
                                 <div class="personal-icons">
-                                    <img src="assets/img/icons/buliding-icon.svg" alt>
+								<i class="feather-calendar"></i>
                                 </div>
                                 <div class="views-personal">
-                                    <h4>Course</h4>
-                                    <h5 id="course"></h5>
+                                    <h4>Leave Date</h4>
+                                    <h5 id="Leavdate"></h5>
                                 </div>
                             </div>
                             <div class="personal-activity">
                                 <div class="personal-icons">
-                                    <i class="feather-phone-call"></i>
+								<i class="feather-calendar"></i>
                                 </div>
                                 <div class="views-personal">
-                                    <h4>Type</h4>
-                                    <h5 id="type"></h5>
+                                    <h4>Fromdate</h4>
+                                    <h5 id="Fromdate"></h5>
                                 </div>
                             </div>
                             <div class="personal-activity">
                                 <div class="personal-icons">
-                                    <i class="feather-mail"></i>
+								<i class="feather-calendar"></i>
                                 </div>
                                 <div class="views-personal">
-                                    <h4>Branch</h4>
-                                    <h5 id="branch">
+                                    <h4>Todate</h4>
+                                    <h5 id="Todate">
                                     </h5>
                                 </div>
                             </div>
-                            <div class="personal-activity">
+                            <!-- <div class="personal-activity">
                                 <div class="personal-icons">
                                     <i class="feather-user"></i>
                                 </div>
@@ -620,14 +620,32 @@
                                     <h4>Year</h4>
                                     <h5 id="year"></h5>
                                 </div>
+                            </div> -->
+                            <div class="personal-activity">
+                                <div class="personal-icons">
+                                    <i class="feather-calendar"></i>
+                                </div>
+                                <div class="views-personal">
+                                    <h4>TotalDays</h4>
+                                    <h5 id="TotalDays"></h5>
+                                </div>
                             </div>
                             <div class="personal-activity">
                                 <div class="personal-icons">
                                     <i class="feather-calendar"></i>
                                 </div>
                                 <div class="views-personal">
-                                    <h4>Semester</h4>
-                                    <h5 id="semester"></h5>
+                                    <h4>status</h4>
+                                    <h5 id="statusmod"></h5>
+                                </div>
+                            </div>
+                            <div class="personal-activity">
+                                <div class="personal-icons">
+                                    <i class="feather-calendar"></i>
+                                </div>
+                                <div class="views-personal">
+                                    <h4>description</h4>
+                                    <h5 id="description"></h5>
                                 </div>
                             </div>
                             <!-- <div class="personal-activity">
@@ -717,8 +735,8 @@
 			});
 		});
 
-		function fetchstaffdetails(staffid) {
-            fetch('GetStaffData?staffid=' + staffid)
+		function fetchstaffdetails(id) {
+            fetch('GetStaffLeaveData?id=' + id)
 
                 .then(function(response) {
                     if (!response.ok) {
@@ -729,11 +747,12 @@
                 .then(function(data) {
                     document.getElementById('staffidi').innerText = data.staffid;
                     document.getElementById('name').innerText = data.name;
-                    document.getElementById('course').innerText = data.contactnumber;
-                    document.getElementById('type').innerText = data.email;
-                    // document.getElementById('branch').innerText = data.branch;
-                    // document.getElementById('year').innerText = data.year;
-                    // document.getElementById('semester').innerText = data.semester;
+                    document.getElementById('Leavdate').innerText = data.Leavdate;
+                    document.getElementById('Fromdate').innerText = data.Fromdate;
+                    document.getElementById('Todate').innerText = data.Todate;
+                    document.getElementById('TotalDays').innerText = data.TotalDays;
+                    document.getElementById('statusmod').innerText = data.status;
+                    document.getElementById('description').innerText = data.description;
                 })
                 .catch(function(error) {
                     console.error('There was a problem with the fetch operation:', error);

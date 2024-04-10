@@ -33,6 +33,8 @@
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/style.css">
 		<link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/toastr/toatr.css">
 
+    <!-- Include Moment.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
 		<script>
 		document.addEventListener('DOMContentLoaded', function() {
@@ -53,7 +55,7 @@
 				window.location.href="StaffSalaryData";
 			}
 			
-			function RedirecttoLeaveHistorypage()
+			function RedirecttoPayStaffSalaryPage()
 			{
 				window.location.href="PayStaffSalaryPage";
 			}
@@ -460,7 +462,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3 col-sm-6 col-12 d-flex" onclick="RedirecttoLeaveHistorypage()">
+						<div class="col-xl-3 col-sm-6 col-12 d-flex" id="paysalary">
 							<div class="card bg-comman w-100">
 								<div class="card-body">
 									<div class="db-widgets d-flex justify-content-between align-items-center">
@@ -486,6 +488,12 @@
 			
         </div>
 		<!-- /Main Wrapper -->
+
+		<div id="toast-container1" class="toast-container toast-top-right">
+			<div class="toast toast-error" aria-live="polite" style="display: block;">
+				<div class="toast-title text-center">Not the End of Month</div>
+			</div>
+		</div>
         <footer>
 					<p>COPYRIGHT © 2023 DREAMSTECHNOLOGIES.</p>					
 				</footer>
@@ -517,6 +525,39 @@
                 modalYesButton.href = 'DeleteTransportWithid?id=' + transportid;
     $('#deleteModal').modal('show');
 }
+
+     // function getLastDayOfMonth(year, month) {
+        //     var nextMonthFirstDay = new Date(year, month + 1, 1);
+        //     var lastDayOfMonth = new Date(nextMonthFirstDay - 1);
+        //     return lastDayOfMonth;
+        // }
+
+        // var currentDate = new Date();
+        // var currentmonth=currentDate.getMonth();
+        // var lastDayOfMonth = getLastDayOfMonth(2024, currentmonth);
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     if (currentdate > lastDayOfMonth) {
+                
+        //     }
+        // });
+
+	if (currentDate > currentMonthEndDate) {
+    document.getElementById('paysalary').setAttribute('onclick', 'RedirecttoPayStaffSalaryPage()');
+    document.getElementById('paysalary').onclick = null; 
+} else {
+    document.getElementById('paysalary').onclick = null;
+    document.getElementById('paysalary').setAttribute('onclick', 'ShowNotMonthEndToast()');
+}
+
+function ShowNotMonthEndToast()
+{
+	let toast=document.getElementById('toast-container1');
+	if (toast) {
+		toast.style.display = 'block';
+				setTimeout(function() {
+					toast.style.display = 'none';
+				}, 3000);
+			} 
+}
 </script>
-<!-- Mirrored from preschool.dreamstechnologies.com/template/transport.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Jan 2024 08:34:41 GMT -->
 </html>

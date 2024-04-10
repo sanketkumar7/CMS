@@ -14,7 +14,7 @@ class StaffModel extends CI_Model
         $formdata['email'] = "admin@gmail.com";
         $formdata['password'] = "admin";
 
-        $user = $this->db->get_where("logindetails", array("email" => "admin@gmail.com", "password" => "admin","role"=>"Admin"))->row();
+        $user = $this->db->get_where("logindetails", array("email" => "admin@gmail.com", "password" => "admin", "role" => "Admin"))->row();
         if ($user) {
             return;
         } else {
@@ -34,7 +34,7 @@ class StaffModel extends CI_Model
     {
         $this->db->select('id');
         $this->db->from('staffdata');
-        $this->db->order_by('id','DESC');
+        $this->db->order_by('id', 'DESC');
         $this->db->limit(1);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -71,10 +71,10 @@ class StaffModel extends CI_Model
         $this->db->insert('logindetails', $logindata);
     }
 
-    function UpdateStaffInLoginDetails($staffid,$data)
+    function UpdateStaffInLoginDetails($staffid, $data)
     {
-        $this->db->where('userid',$staffid);
-        $this->db->update("logindetails",$data);
+        $this->db->where('userid', $staffid);
+        $this->db->update("logindetails", $data);
     }
     function findStaffById($id)
     {
@@ -91,9 +91,9 @@ class StaffModel extends CI_Model
 
     function UpdateStaffInEachtable($staffid, $name)
     {
-        $array_table = array('staffsalarydata', 'staffattendancedata','staffcheckincheckoutdata');
+        $array_table = array('staffsalarydata', 'staffattendancedata', 'staffcheckincheckoutdata');
         foreach ($array_table as $table) {
-            if ($table == "staffattendancedata" || $table =="staffcheckincheckoutdata") {
+            if ($table == "staffattendancedata" || $table == "staffcheckincheckoutdata") {
                 $this->db->set('name', $name);
                 $this->db->where('staffid', $staffid);
                 $this->db->update($table);
@@ -111,7 +111,7 @@ class StaffModel extends CI_Model
 
     function deletStaffLoginDetails($staffid)
     {
-        $this->db->delete('logindetails', array('staffid' => $staffid));
+        $this->db->delete('logindetails', array('userid' => $staffid));
     }
 
     function markStaffAttendance($data)
@@ -146,7 +146,7 @@ class StaffModel extends CI_Model
         return $Data;
     }
 
-    function getByStaffByIdfromcheckincheckout($staffid,$date)
+    function getByStaffByIdfromcheckincheckout($staffid, $date)
     {
         $Data = $this->db->get_where('staffcheckincheckoutdata', array('staffid' => $staffid, 'date' => $date))->result();
         return $Data;
@@ -161,14 +161,14 @@ class StaffModel extends CI_Model
         $this->db->insert('staffcheckincheckoutdata', $formdata);
     }
 
-    function setStaffAttendanceForToday($staffid,$name,$date,$attendance)
+    function setStaffAttendanceForToday($staffid, $name, $date, $attendance)
     {
-        $formdata=array(
-            "staffid"=>$staffid,
-            "date"=>$date,
-            "name"=>$name,
-            "attendance"=>$attendance,
-            "month"=>date('F'),
+        $formdata = array(
+            "staffid" => $staffid,
+            "date" => $date,
+            "name" => $name,
+            "attendance" => $attendance,
+            "month" => date('F'),
         );
         $this->db->insert('staffattendancedata', $formdata);
     }
@@ -178,9 +178,9 @@ class StaffModel extends CI_Model
         $Data = $this->db->get('staffcheckincheckoutdata')->result();
         return $Data;
     }
-    function getStaffcheckincheckoutlistforstaffid($staffid,$todaydate)
+    function getStaffcheckincheckoutlistforstaffid($staffid, $todaydate)
     {
-        $Data = $this->db->get_where('staffcheckincheckoutdata',array('staffid'=>$staffid,'date'=>$todaydate))->result();
+        $Data = $this->db->get_where('staffcheckincheckoutdata', array('staffid' => $staffid, 'date' => $todaydate))->result();
         return $Data;
     }
     function getallstaffids()
@@ -189,11 +189,9 @@ class StaffModel extends CI_Model
         $query = $this->db->select('staffid')->get('staffdata');
         $firstColumn = array();
         foreach ($query->result_array() as $row) {
-            if($row['staffid']!="")
-            {
+            if ($row['staffid'] != "") {
                 $firstColumn[] = $row['staffid'];
             }
-           
         }
         return $firstColumn;
     }
@@ -227,6 +225,7 @@ class StaffModel extends CI_Model
         $data = $this->db->get_where('staffleavedata', array('id' => $id))->row();
         return $data;
     }
+
 
     function changeRemainingLeavesCount($staffid, $remainingleaves)
     {

@@ -17,7 +17,7 @@ class Students extends CI_Controller
             'students' => $students,
             'search_id' => $search_id ?? '',
             'search_name' => $search_name ?? '',
-            'search_phone' => $search_phone ?? ''
+            'search_phone' => $search_phone ?? '',
         ];
         $this->load->view('layout/sidebar');
         $this->load->view('layout/header');
