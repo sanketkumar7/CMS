@@ -9,6 +9,14 @@ class StaffModel extends CI_Model
         $this->load->library('session');
     }
 
+    function GenerateUniqueID()
+    {
+        $randomNumber = mt_rand(100, 999);       
+        $randomAlphabeticCharacter1 = chr(rand(65, 90)); 
+        $randomAlphabeticCharacter2 = chr(rand(65, 90)); 
+        $shortIdentifier = $randomNumber . $randomAlphabeticCharacter1 . $randomAlphabeticCharacter2;
+        return $shortIdentifier;
+    }
     function createAdmin()
     {
         $formdata['email'] = "admin@gmail.com";
@@ -55,6 +63,13 @@ class StaffModel extends CI_Model
     function addStaffToDb($FormData)
     {
         $this->db->insert('staffdata', $FormData);
+        $FormData["status"]="Active";
+        $this->StaffModel->addStaffTostaffhistory($FormData);
+    }
+
+    function addStaffTostaffhistory($FormData)
+    {
+        $this->db->insert('staffhistory', $FormData);
     }
 
     function checkemail($email)
@@ -66,6 +81,22 @@ class StaffModel extends CI_Model
         return NULL;
     }
 
+    function checkaadhar($aadhar)
+    {
+        $staff = $this->db->get_where('staffhistory', array('aadhar' => $aadhar))->row();
+        if ($staff) {
+            return $staff;
+        }
+        return NULL;
+    }
+    function getsalaryfrodesignation($designation)
+    {
+        $staff = $this->db->get_where('staffsalarybasedondesignation', array('designation' => $designation))->row();
+        if ($staff) {
+            return $staff;
+        }
+        return NULL;
+    }
     function createLoginDetails($logindata)
     {
         $this->db->insert('logindetails', $logindata);
@@ -82,11 +113,16 @@ class StaffModel extends CI_Model
         return $data->row();
     }
 
-
-    function updateStaffDataWithId($id, $FormData)
+    function updateStaffDataWithId($id, $staffid, $FormData)
     {
         $this->db->where('id', $id);
         $this->db->update('staffdata', $FormData);
+        $this->StaffModel->updateStaffhistoryDataWithId($staffid, $FormData);
+    }
+    function updateStaffhistoryDataWithId($staffid, $FormData)
+    {
+        $this->db->where('staffid', $staffid);
+        $this->db->update('staffhistory', $FormData);
     }
 
     function UpdateStaffInEachtable($staffid, $name)
@@ -104,11 +140,18 @@ class StaffModel extends CI_Model
             }
         }
     }
-    function deleteStaffWithId($id)
+    function deleteStaffWithId($id, $staffid)
     {
         $this->db->delete('staffdata', array('id' => $id));
+        $this->StaffModel->changestatusinstaffhistory($staffid);
     }
 
+    function changestatusinstaffhistory($staffid)
+    {
+        $this->db->set('status',"Left");
+        $this->db->where('staffid', $staffid);
+        $this->db->update("staffhistory");
+    }
     function deletStaffLoginDetails($staffid)
     {
         $this->db->delete('logindetails', array('userid' => $staffid));
@@ -330,5 +373,22 @@ class StaffModel extends CI_Model
     function pay($formdata)
     {
         $this->db->insert("staffsalarydata", $formdata);
+    }
+
+    function checksalarypaycount($month)
+    {
+        $count = $this->db->get_where("staffsalarydata", array("status" => "Paid", "month" => $month))->num_rows();
+        return $count;
+    }
+
+    function totalstaffcount()
+    {
+        $count = $this->db->get("staffdata")->num_rows();
+        return $count;
+    }
+
+    function getDesignationdata($designation)
+    {
+        $designation=$this->db->get_where("staffsalarybasedondesignation",array("designation",$designation))->row();
     }
 }

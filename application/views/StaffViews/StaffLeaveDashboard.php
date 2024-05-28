@@ -11,13 +11,18 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo base_url() ?>assets/img/favicon.png">
 
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrap.min.css">
+     
+      <!-- Main CSS -->
+      <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/style.css">
+      
     <!-- Fontfamily -->
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&amp;display=swap"
         rel="stylesheet">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrap.min.css">
+   
 
     <!-- Feathericon CSS -->
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/feather/feather.css">
@@ -32,9 +37,9 @@
     <!-- Datatables CSS -->
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/datatables/datatables.min.css">
 
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/style.css">
+  
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/toastr/toatr.css">
+
 
 
     <script>
@@ -47,6 +52,12 @@
             }, 3000);
         }
     });
+    function showElement() {
+            var element = document.getElementById("sidebar");
+			console.log(document.getElementById("sidebar"));
+            element.style.display = "block";
+        }
+        setTimeout(showElement, 10);
     </script>
     <script>
     var RouteCard = document.getElementById('RouteCard');
@@ -305,27 +316,26 @@
 
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
-            <div class="sidebar-inner slimscroll">
-                <div id="sidebar-menu" class="sidebar-menu">
-                    <ul>
-                        <!-- <li class="menu-title"> 
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu">
+						<ul>
+							<!-- <li class="menu-title"> 
 								<span>Main Menu</span>
 							</li>
-							<li class="submenu">
-								<a href="#"><i class="feather-grid"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+							<li class="submenu active">
+								<a href="#"><i class="fa-solid fa-house"></i><span> Dashboard</span> <span class="menu-arrow"></span></a>
 								<ul>
-									<li><a href="index.html">Admin Dashboard</a></li>
-									<li><a href="teacher-dashboard.html">Teacher Dashboard</a></li>
-									<li><a href="student-dashboard.html">Student Dashboard</a></li>
+									<li><a href="<?php echo base_url('index.php/Welcome/AdminDashboard'); ?>" >Admin Dashboard</a></li>
+									<li><a href="<?php echo base_url('index.php/Welcome/TeacherDashboard'); ?>">Teacher Dashboard</a></li>
+									<li><a href="<?php echo base_url('index.php/Welcome/StudentDashboard'); ?>">Student Dashboard</a></li>
 								</ul>
 							</li>
 							<li class="submenu">
 								<a href="#"><i class="fas fa-graduation-cap"></i> <span> Students</span> <span class="menu-arrow"></span></a>
 								<ul>
-									<li><a href="students.html">Student List</a></li>
-									<li><a href="student-details.html">Student View</a></li>
-									<li><a href="add-student.html">Student Add</a></li>
-									<li><a href="edit-student.html">Student Edit</a></li>
+									<li><a href="ShowStudents">Student List</a></li>
+									<li><a href="AddStudentPage">Student Add</a></li>
+									<li><a href="ShowHalfFilledFormList">Incomplete Forms</a></li>
 								</ul>
 							</li>
 							<li class="submenu">
@@ -421,34 +431,41 @@
 									<li><a href="login.html">Login</a></li>
 									<li><a href="register.html">Register</a></li>
 									<li><a href="forgot-password.html">Forgot Password</a></li>
-									<li><a href="error-404.html">Error Page</a></li>
-								</ul>
+									 <li><a href="error-404.html">Error Page</a></li> -->
+								<!-- </ul>
+							</li>
+							<li class="menu-title"> 
+								<span>Others</span>
 							</li>
 							<li> 
 								<a href="sports.html"><i class="fas fa-baseball-ball"></i> <span>Sports</span></a>
-							</li> -->
-                        <li>
-                            <a href="<?php echo base_url() ?>index.php/StaffController/StaffDashboard"><i
-                                    class="fa-solid fa-house"></i><span>Dashboard</span></a>
+							</li> --->
+							<li class=""> 
+							<a href="<?php echo base_url()?>index.php/StaffController/StaffDashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+							</li>
+						<li class="active">  
+								<a href="<?php echo base_url()?>index.php/Leave/StaffLeaveDashboard"><i class="fa fa-suitcase"></i> <span>Leave</span></a>
+							</li>
+                            <!--
+						<li class="">  
+								<a href="<?php echo base_url()?>index.php/StudentController/index"><i class="fas fa-graduation-cap"></i><span>Student</span></a>
+							</li>
+							<li class="active">
+                            <a href="<?php echo base_url()?>index.php/StaffController/AdminStaffDashboard"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
                         </li>
-                        <li class="active">
-                            <a href="<?php echo base_url() ?>index.php/StaffController/StaffLeaveDashboard"><i
-                                    class="fa-solid fa-suitcase"></i> <span>Leave</span></a>
+							<li class="">
+                            <a href="<?php echo base_url()?>index.php/DepartmentController/Department"><i class="Fa fa-solid fa-building-columns"></i><span>Department</span></a>
                         </li>
-                        <li class="">
-                            <a href="<?php echo base_url() ?>index.php/StaffController/Logout"><i
-                                    class="fa-solid fa-power-off"></i> <span>Logout</span></a>
-                        </li>
-                        <!-- <li> 
-								<a href="<?php echo base_url() ?>TransportController/index"><i class="fas fa-bus"></i> <span>Transport</span></a>
-							</li> -->
-                        <!-- <li class="active">
-                            <a href="<?php echo base_url() ?>StaffController/index"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
+							<li class="">
+                            <a href="<?php echo base_url()?>index.php/SubjectController/Subject"><i class="fa fa-solid fa-book-open"></i> <span>Subject</span></a>
                         </li> -->
-                    </ul>
+						<li class="">
+						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
+                        </li>
+						</ul>
+					</div>
                 </div>
             </div>
-        </div>
         <!-- /Sidebar -->
         <!-- Page Wrapper -->
         <div class="page-wrapper">

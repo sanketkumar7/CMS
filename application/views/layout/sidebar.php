@@ -124,17 +124,47 @@
 							<li> 
 								<a href="sports.html"><i class="fas fa-baseball-ball"></i> <span>Sports</span></a>
 							</li> --->
-						<li class="active"> 
-						<a href="<?php echo base_url()?>index.php/StaffController/AdminDashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+							<li class="active"> 
+							<a href="<?php echo base_url()?>index.php/StaffController/AdminDashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
 							</li>
 						<li class="">  
 								<a href="<?php echo base_url()?>index.php/TransportController/index"><i class="fas fa-bus"></i> <span>Transport</span></a>
 							</li>
+						<li class="">  
+								<a href="<?php echo base_url()?>index.php/StudentController/index"><i class="fas fa-graduation-cap"></i><span>Student</span></a>
+							</li>
 							<li class="">
                             <a href="<?php echo base_url()?>index.php/StaffController/AdminStaffDashboard"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
-		</li>
+                        </li>
 							<li class="">
-                            <a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
+                            <a href="<?php echo base_url()?>index.php/DepartmentController/Department"><i class="Fa fa-solid fa-building-columns"></i><span>Department</span></a>
+                        </li>
+							<li class="">
+                            <a href="<?php echo base_url()?>index.php/SubjectController/Subject"><i class="fa fa-solid fa-book-open"></i> <span>Subject</span></a>
+                        </li>
+						<li class="">
+                            <a href="<?php echo base_url()?>index.php/Holiday/Holiday"><i class="fas fa-calendar-check"></i> <span>Holiday</span></a>
+                        </li>
+						<li class="">
+                            <a href="<?php echo base_url()?>index.php/Leave/AdminLeaveDashboard"><i class="fas fa-suitcase"></i> <span>Leave</span></a>
+                        </li>
+						<li class="">
+                            <a href="<?php echo base_url()?>index.php/TimeTableController/TimeTableDashboard"><i class="fa-solid fa-table"></i><span>Timetable</span></a>
+                        </li>
+						<li class="">
+                            <a href="<?php echo base_url()?>index.php/Fees/AddFees"><i class="fa-solid fa-money-bill"></i><span>Fees</span></a>
+                        </li>
+						<li class="">
+						<a href="<?php echo base_url()?>index.php/Library/LibraryDashboard"><i class="fa-solid fa-book"></i> <span>Library</span></a>
+                        </li>
+						<li class="">
+						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-sack-dollar"></i> <span>Salary</span></a>
+                        </li>
+						<li class="">
+						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
+                        </li>
+						<li class="">
+						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
                         </li>
 						</ul>
 					</div>

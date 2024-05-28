@@ -23,8 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost:8080/CMSGit/CMS/';
-// $config['base_url'] = 'https://d58e-2405-201-1006-20b1-64e7-cff2-f34a-7319.ngrok-free.app/CMSGit/CMS';
+$config['base_url'] = 'http://localhost:8080/CMSGit/CMS';
+// $config['base_url'] = 'https://b718-2405-201-1006-20b1-25c9-6196-c714-c087.ngrok-free.app/CMSGit/CMS';
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ $config['base_url'] = 'http://localhost:8080/CMSGit/CMS/';
 | something else. If you are using mod_rewrite to remove the page set this
 | variable so that it is blank.
 |
-*/
+*/ 
 $config['index_page'] = 'index.php';
 
 /*

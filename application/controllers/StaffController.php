@@ -18,6 +18,8 @@ class StaffController extends CI_Controller
         $currenttime = date("H:i:s");
     }
 
+ 
+    
     public function index()
     {
         return redirect("StaffController/Login");
@@ -75,7 +77,9 @@ class StaffController extends CI_Controller
     {
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Staff") {
+            
             $this->load->view("StaffViews/StaffDashboard");
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Staff") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -87,7 +91,9 @@ class StaffController extends CI_Controller
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $Data['data'] = $this->StaffModel->getStaffList();
+            
             $this->load->view('StaffViews/Staff', $Data);
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -99,6 +105,7 @@ class StaffController extends CI_Controller
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $this->load->view('StaffViews/addStaff');
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -119,6 +126,38 @@ class StaffController extends CI_Controller
             $this->output->set_output(json_encode($response));
         }
     }
+
+    function checkaadharavailability()
+    {
+        $aadhar = $this->input->get('aadhar');
+        $user = $this->StaffModel->checkaadhar($aadhar);
+        if ($user) {
+            $response = array('message' => "aadhar Already Registered");
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($response));
+        } else {
+            $response = array('message' => "No Data Found");
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($response));
+        }
+    }
+
+    function slaryfordesignation()
+    {
+        
+        $designation = $this->input->get('designation');
+        $user = $this->StaffModel->getsalaryfrodesignation($designation);
+        if ($user) {
+            $response = array('salary' => $user->salary);
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($response));
+        } else {
+            $response = array('message' => "No Data Found");
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($response));
+        }
+    }
+    
     function AddStaffPost()
     {
         $role = $this->session->userdata('role');
@@ -131,14 +170,9 @@ class StaffController extends CI_Controller
                 $data = array('upload_data' => $this->upload->data());
                 $FormData['profilephoto'] = $data['upload_data']['file_name'];
             }
-            $Staffid = $this->StaffModel->get_Last_Value_in_Staff_id();
-            if ($Staffid == null) {
-                $FormData['staffid'] = "STF-1";
-                $Staffid = "STF-1";
-            } else {
-                $FormData['staffid'] = $Staffid;
-            }
-
+            $uniquedigit=$this->StaffModel->GenerateUniqueID();
+            $FormData['staffid'] = "STF-".$uniquedigit;
+            $Staffid = $FormData['staffid'];
             $logindata = array(
                 'email' => $FormData['loginemail'],
                 'password' => $FormData['password'],
@@ -159,7 +193,9 @@ class StaffController extends CI_Controller
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $id = $this->input->get('id');
             $Data['data'] = $this->StaffModel->findStaffById($id);
+   
             $this->load->view('StaffViews/editStaff', $Data);
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -181,7 +217,7 @@ class StaffController extends CI_Controller
                     $FormData['profilephoto'] = $data['upload_data']['file_name'];
                 }
                 $name = $FormData['firstname'] . " " . $FormData['lastname'];
-                $this->StaffModel->updateStaffDataWithId($id, $FormData);
+                $this->StaffModel->updateStaffDataWithId($id, $FormData['staffid'], $FormData);
                 $this->StaffModel->UpdateStaffInEachtable($FormData['staffid'], $name);
                 $data = array(
                     'email' => $FormData['loginemail'],
@@ -202,7 +238,8 @@ class StaffController extends CI_Controller
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $id = $this->input->get('id');
-            $this->StaffModel->deleteStaffWithId($id);
+            $staff = $this->StaffModel->findStaffById($id);
+            $this->StaffModel->deleteStaffWithId($id, $staff->staffid);
             $staff = $this->StaffModel->findStaffById($id);
             $this->StaffModel->deletStaffLoginDetails($staff->staffid);
             $this->session->set_flashdata('StaffDeleteSuccess', 'Staff Deleted Successfully ..!');
@@ -220,6 +257,7 @@ class StaffController extends CI_Controller
             $id = $this->input->get('id');
             $Data['data'] = $this->StaffModel->findStaffById($id);
             $this->load->view('StaffViews/ShowStaffData', $Data);
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -233,6 +271,7 @@ class StaffController extends CI_Controller
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $Data['data'] = $this->StaffModel->getStaffAttendanceList();
             $this->load->view('StaffViews/StaffAttendanceList', $Data);
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -245,6 +284,7 @@ class StaffController extends CI_Controller
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $this->load->view('StaffViews/MarkStaffAttendance');
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -256,6 +296,7 @@ class StaffController extends CI_Controller
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $Data['data'] = $this->StaffModel->getStaffcheckincheckoutlist();
+            $this->load->view('layout/staffsidebar');
             $this->load->view('StaffViews/Staffcheckincheckoutdata', $Data);
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
@@ -523,16 +564,39 @@ class StaffController extends CI_Controller
                             $totalWorkingHours = round($totalWorkingHours);
                         }
                     }
-                    if ($totalWorkingHours >= 8) {
+                    $currentday=date('l');
+                    $currentdate=date('d-m-y');
+                    $this->load->model("HolidayModel");
+                    $Holiday=$this->HolidayModel->getHolidayByDate($currentdate);
+                    if(!empty($Holiday))
+                    {
                         $staff = $this->StaffModel->getByStaffById($staffid);
-
                         $name = $staff->firstname . " " . $staff->lastname;
                         $this->StaffModel->setStaffAttendanceForToday($staffid, $name, $date, "Present");
-                    } else {
+                    }
+                    else if ($totalWorkingHours >= 8 && $currentday!="Saturday" || $currentday!="Sunday") {
+                        $staff = $this->StaffModel->getByStaffById($staffid);
+                        $name = $staff->firstname . " " . $staff->lastname;
+                        $this->StaffModel->setStaffAttendanceForToday($staffid, $name, $date, "Present");
+                    }
+                    else if($totalWorkingHours>=4 && $currentday=="Saturday") 
+                    {
+                        $staff = $this->StaffModel->getByStaffById($staffid);
+                        $name = $staff->firstname . " " . $staff->lastname;
+                        $this->StaffModel->setStaffAttendanceForToday($staffid, $name, $date, "Present");
+                    }
+                    else if($currentday=="Sunday") 
+                    {
+                        $staff = $this->StaffModel->getByStaffById($staffid);
+                        $name = $staff->firstname . " " . $staff->lastname;
+                        $this->StaffModel->setStaffAttendanceForToday($staffid, $name, $date, "Present");
+                    }
+                    else {
                         $staff = $this->StaffModel->getByStaffById($staffid);
                         $name = $staff->firstname . " " . $staff->lastname;
                         $this->StaffModel->setStaffAttendanceForToday($staffid, $name, $date, "Half Day");
                     }
+
                 } else {
                     $data = $this->StaffModel->getLeaveDataForStaffidforstatusapproved($staffid, "Approved");
                     if (!empty($data)) {
@@ -580,88 +644,7 @@ class StaffController extends CI_Controller
         }
     }
 
-    function StaffLeaveDashboard()
-    {
-        $role = $this->session->userdata('role');
-        if ($this->session->userdata('userloggedin') && $role == "Staff") {
-            $this->load->view('StaffViews/StaffLeaveDashboard');
-        } else if ($this->session->userdata('userloggedin') && $role != "Staff") {
-            return redirect("StaffController/UnAuthorizedAccess");
-        } else {
-            return redirect("StaffController/Login");
-        }
-    }
 
-    function ApplyLeavePage()
-    {
-        $role = $this->session->userdata('role');
-        if ($this->session->userdata('userloggedin') && $role == "Staff") {
-            $StaffLeaveData['data'] = $this->StaffModel->getleavedatawithStafffid($this->session->userdata('staffid'));
-            $this->load->view("StaffViews/ApplyLeavePage", $StaffLeaveData);
-        } else if ($this->session->userdata('userloggedin') && $role != "Staff") {
-            return redirect("StaffController/UnAuthorizedAccess");
-        } else {
-            return redirect("StaffController/Login");
-        }
-    }
-
-    function ApplyleavePost()
-    {
-        $role = $this->session->userdata('role');
-        if ($this->session->userdata('userloggedin') && $role == "Staff") {
-            $formdata = $this->input->post();
-            $staffid = $this->session->userdata('staffid');
-            if ($formdata['leavetype'] == "Half Day") {
-                $newdate = new DateTime($formdata['leavedate']);
-                $formattedDate = $newdate->format('d-m-y');
-                $formdata['leavedate'] = $formattedDate;
-                $formdata['fromdate'] = "NA";
-                $formdata['todate'] = "NA";
-            } else if ($formdata['leavedate'] != '') {
-                $newdate = new DateTime($formdata['leavedate']);
-                $formattedDate = $newdate->format('d-m-y');
-                $formdata['leavedate'] = $formattedDate;
-                $formdata['fromdate'] = "NA";
-                $formdata['todate'] = "NA";
-                $formdata['remainingleavecount'] = $formdata['remainingleavecount'] - $formdata['totaldays'];
-                $this->StaffModel->changeRemainingLeavesCount($staffid, $formdata['remainingleavecount']);
-            } else {
-                $newfromdate = new DateTime($formdata['fromdate']);
-                $formattedfromDate = $newfromdate->format('d-m-y');
-                $newtodate = new DateTime($formdata['todate']);
-                $formattedtoDate = $newtodate->format('d-m-y');
-                $formdata['fromdate'] = $formattedfromDate;
-                $formdata['todate'] = $formattedtoDate;
-                $formdata['leavedate'] = "NA";
-                $formdata['remainingleavecount'] = $formdata['remainingleavecount'] - $formdata['totaldays'];
-                $this->StaffModel->changeRemainingLeavesCount($staffid, $formdata['remainingleavecount']);
-            }
-
-            $formdata['status'] = "Pending";
-            $formdata['staffid'] = $this->session->userdata('staffid');
-            $this->StaffModel->leaverequest($formdata);
-            $this->session->set_flashdata('StaffLeaveSuccess', 'Applied for Leave Successfully ..!');
-            return redirect("StaffController/LeaveHistory");
-        } else if ($this->session->userdata('userloggedin') && $role != "Staff") {
-            return redirect("StaffController/UnAuthorizedAccess");
-        } else {
-            return redirect("StaffController/login");
-        }
-    }
-
-    function LeaveHistory()
-    {
-        $role = $this->session->userdata('role');
-        if ($this->session->userdata('userloggedin') && $role == "Staff") {
-            $staffid = $this->session->userdata('staffid');
-            $Leavedata['data'] = $this->StaffModel->getLeaveHistoryForLoggedInUser($staffid);
-            $this->load->view("StaffViews/StaffLeaveHistory", $Leavedata);
-        } else if ($this->session->userdata('userloggedin') && $role != "Staff") {
-            return redirect("StaffController/UnAuthorizedAccess");
-        } else {
-            return redirect("StaffController/login");
-        }
-    }
 
     function AdminDashboard()
     {
@@ -683,6 +666,7 @@ class StaffController extends CI_Controller
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $this->load->view("StaffViews/AdminStaffDashboard");
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -690,56 +674,7 @@ class StaffController extends CI_Controller
         }
     }
 
-    function AdminLeaveDashboard()
-    {
-        $role = $this->session->userdata('role');
-        if ($this->session->userdata('userloggedin') && $role == "Admin") {
-            $Leavedata['data'] = $this->StaffModel->getLeaveData();
-            $this->load->view("StaffViews/StaffLeaveData", $Leavedata);
-        } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
-            return redirect("StaffController/UnAuthorizedAccess");
-        } else {
-            return redirect("StaffController/login");
-        }
-    }
-
-    function ChangeLeaveStatus()
-    {
-        $role = $this->session->userdata('role');
-        if ($this->session->userdata('userloggedin') && $role == "Admin") {
-            $id = $this->input->get("id");
-            $status = $this->input->get("status");
-            $leavedata = $this->StaffModel->getleavedataforid($id);
-            if ($status == "Approve") {
-                if ($leavedata->leavetype == "Half Day") {
-                    $status = "Approved";
-                    $this->StaffModel->changeStatus($id, $status);
-                    $this->session->set_flashdata("ApprovedSuccess", "Approved Successfully");
-                    return redirect("StaffController/AdminLeaveDashboard");
-                } else {
-                    $staffid = $leavedata->staffid;
-                    $status = "Approved";
-                    $this->StaffModel->changeStatus($id, $status);
-                    $this->session->set_flashdata("ApprovedSuccess", "Approved Successfully");
-
-                    return redirect("StaffController/AdminLeaveDashboard");
-                }
-            } else if ($status == "Reject") {
-                $status = "Rejected";
-                $staffid = $leavedata->staffid;
-                $this->StaffModel->changeStatus($id, $status);
-                $leavcount = $leavedata->remainingleavecount + $leavedata->totaldays;
-                $this->StaffModel->changeRemainingLeavesCount($staffid, $leavcount);
-                $this->session->set_flashdata("RejectSuccess", "Rejected Successfully");
-
-                return redirect("StaffController/AdminLeaveDashboard");
-            }
-        } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
-            return redirect("StaffController/UnAuthorizedAccess");
-        } else {
-            return redirect("StaffController/login");
-        }
-    }
+ 
 
     function GetStaffData()
     {
@@ -770,92 +705,17 @@ class StaffController extends CI_Controller
         $this->output->set_output(json_encode($response));
     }
 
-    function GetStaffLeaveData()
-    {
-        $id = $this->input->get('id');
-        $LeaveData = $this->StaffModel->getleavedataforid($id);
-        $staffid = $LeaveData->staffid;
-        $staff=$this->StaffModel->getStaffWithStaffId($staffid);
-        if(!empty($staff))
-        {
-            $name=$staff->firstname." ".$staff->lastname;
-            $Leavdate=$LeaveData->leavedate;
-            $Fromdate=$LeaveData->fromdate;
-            $Todate=$LeaveData->todate;
-            $TotalDays=$LeaveData->totaldays;
-            $status=$LeaveData->status;
-            $description=$LeaveData->leavedescription;
-            $response=array(
-                'staffid'=>$staffid,
-                'name'=>$name,
-                'Leavdate'=>$Leavdate,
-                'Fromdate'=>$Fromdate,
-                'Todate'=>$Todate,
-                'TotalDays'=>$TotalDays,
-                'status'=>$status,
-                'description'=>$description,
-            );
-        }
-        $this->output->set_content_type('application/json');
-        $this->output->set_output(json_encode($response));
+   
+   
 
-    }
 
-    function CheckLeaveOnDate()
-    {
-        $staffid = $this->session->userdata('staffid');
-        $LeaveType = $this->input->get('LeaveType');
-        $date = new DateTime($this->input->get("date"));
-        $formattedDate = $date->format('d-m-y');
-        $data = $this->StaffModel->getStaffLeaveDataForDate($staffid, $formattedDate, "Rejected");
-        if ($data) {
-            $response = array('message' => "Taken");
-        } else {
-            $response = array('message' => "No Data Found");
-        }
-        $this->output->set_content_type('application/json');
-        $this->output->set_output(json_encode($response));
-    }
-
-    function checkLeaveonDates()
-    {
-        $staffid = $this->session->userdata('staffid');
-        $LeaveType = $this->input->get('LeaveType');
-        $fromdate = $this->input->get("fromdate");
-        $todate = $this->input->get("todate");
-        $data = $this->StaffModel->getLeaveDataForStaffid($staffid, "Rejected");
-        $overlapFound = false;
-        $newFromDate = new DateTime($fromdate);
-        $newToDate = new DateTime($todate);
-        foreach ($data as $entry) {
-            if ($entry->fromdate != "NA" && $entry->todate != "NA") {
-                $existingFromDate = new DateTime($entry->fromdate);
-                $existingToDate = new DateTime($entry->todate);
-                if ($newFromDate == $existingFromDate && $newToDate == $existingToDate) {
-                    $overlapFound = true;
-                    break;
-                }
-                if ($newFromDate <= $existingToDate && $newToDate >= $existingFromDate) {
-                    $overlapFound = true;
-                    break;
-                }
-            }
-        }
-
-        if ($overlapFound) {
-            $response = array("message" => "Taken");
-        } else {
-            $response = array("message" => "Not found");
-        }
-        $this->output->set_content_type('application/json');
-        $this->output->set_output(json_encode($response));
-    }
 
     function AdminSalaryDashboard()
     {
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $this->load->view("StaffViews/AdminSalaryDashboard");
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -869,6 +729,7 @@ class StaffController extends CI_Controller
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $SalaryData['data'] = $this->StaffModel->getStaffSalaryData();
             $this->load->view("StaffViews/StaffSalaryData", $SalaryData);
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
@@ -881,12 +742,14 @@ class StaffController extends CI_Controller
         $role = $this->session->userdata('role');
         if ($this->session->userdata('userloggedin') && $role == "Admin") {
             $this->load->view("StaffViews/PayStaffSalary");
+            $this->load->view('layout/staffsidebar');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
             return redirect("StaffController/UnAuthorizedAccess");
         } else {
             return redirect("StaffController/login");
         }
     }
+
     function PayStaffSalary()
     {
         $role = $this->session->userdata('role');
@@ -902,6 +765,21 @@ class StaffController extends CI_Controller
         } else {
             return redirect("StaffController/login");
         }
+    }
+
+    function checkpreviousmonthpaystatus()
+    {
+        $previousmonth = $this->input->get("month");
+        $staffcount = $this->StaffModel->totalstaffcount();
+        $salarypaidcount = $this->StaffModel->checksalarypaycount($previousmonth);
+
+        if ($staffcount == $salarypaidcount) {
+            $response = array("message" => true);
+        } else {
+            $response = array("message" => false);
+        }
+        $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode($response));
     }
 
     function FetchStaffWithId()
@@ -922,6 +800,10 @@ class StaffController extends CI_Controller
     {
         $staffid = $this->input->get('staffid');
         $month = $this->input->get('month');
+        $staff=$this->StaffModel->getByStaffById($staffid);
+        $designation=$staff->designation;
+        $designationdata=$this->StaffModel->getDesignationdata($designation);
+        $salary=$designationdata->salary;
         $Totalcount = 0;
         $salarydata = $this->StaffModel->checkSalaryStatusForTheMonth($staffid, $month);
         if ($salarydata) {
@@ -936,12 +818,32 @@ class StaffController extends CI_Controller
                 $Halfdayacount = $Halfdayacount * 0.5;
                 $Totalcount += $Halfdayacount;
             }
-            $response = array('count' => $Totalcount);
+            $response = array('count' => $Totalcount,
+        'salary'=>$salary);
             if ($Attendancecount == 0 && $Halfdayacount == 0) {
                 $response = array('count' => $Totalcount);
             }
         }
         $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode($response));
+    }
+
+    function checkdateinholidays()
+    {
+        $date=$this->input->get("date");
+        $dateTime = new DateTime($date);
+        $formattedDate = $dateTime->format('d-m-Y');
+        $this->load->model("HolidayModel");
+        $holiday=$this->HolidayModel->getHolidayByDate($formattedDate);
+        if(!empty($holiday))
+        {
+            $response=array("message"=>"Holiday Found");
+        }
+        else{
+            $response=array("message"=>"No Holiday Found");
+        }
+
+        $this->output->set_content_type("application/json");
         $this->output->set_output(json_encode($response));
     }
 }

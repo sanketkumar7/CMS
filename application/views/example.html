@@ -1,12 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<head id="head">
+  
+</head><!--This is comment--><body id="body" >
+
+    <form id="form" style="border:2px solid black">
+        <select name="dept" id="dept">
+            <option>d1</option>
+            <option>d2</option>
+            <option>d3</option>
+        </select> 
+        <input type="text" name="name">
+        
+        <select>
+            <option>c1</option>
+            <option>c2</option>
+            <option>c3</option>
+        </select>
+        <select  name="course">
+            <option>c1</option>
+            <option>c1</option>
+            <option>c1</option>
+        </select>
+        <button type="submit">bt</button>
+        </form>
+
+    <h1 style="color:red;">THIS IS heading</h1>
+    <p class="deno gqhdw mndghqs hg" id="demo" name="mojo" style="color:red;">this is orginal</p>
+    <p class="deno" id="demo">this is orginal</p>
+    <i class="deno" type="text" name="name" placeholder="This is name">Color</i>
+    <p class="deno" type="text" name="name" placeholder="This is name">Color</p>
+    <p type="text" name="name" placeholder="This is name">Color</p>
+    <p type="text" name="name" placeholder="This is name">Color</p>
+    <p name="name">this is coloe</p>
+    <div id="parent" class="parent">
+        <h3>this is child</h3>
+       
+        <h3>this is child</h3>
+        <h3>this is child</h3>
+    </div>
+
+    <button id="btn" class="btn btn-primary">click me</button>
+
+
+    <!-- Before Begin -->
+    <div id="main">
+        <!-- after Begin -->
+        <p id="note" class="note">This is a note!</p>
+<!-- Before End -->
+    </div>
+    <!-- AFter End -->
+
+
+
+
+    <ul id="ul">
+        <!-- <li>HTML</li> -->
+<li id="mn">this is last childs</li>
+<li>React</li>
+<li>meteor</li>
+<li>polymer</li>
+    </ul>
+    <p id="pt" >thsi is black color</p>
     <script src="example.js"></script>
-</head>
-<body>
-    
+
 </body>
+    <!-- <script>
+        let note = document.querySelector('.note');
+        console.log(note.parentNode);
+    </script> -->
+   
+
+<!-- 
+    <style>
+        .deno i{
+            color: red;
+        }
+    </style>   -->
+<input type="number" id="value1" placeholder="This isnumbe">
+<input type="number" id="value2">
+<button onclick="add()">calculate</button>
+<input type="number" id="total">
+
+
+
+<script>
+    function add()
+    {
+        document.getElementById("value1").placeholder="Thi is String";
+        v2=parseInt(document.getElementById("value2").value);
+        Sum=document.getElementById("total");
+        Sum.value=parseInt(v1+v2);
+    }
+</script>
 </html>

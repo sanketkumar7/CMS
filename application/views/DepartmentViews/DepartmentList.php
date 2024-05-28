@@ -5,16 +5,23 @@
 <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <title>Preskool - Departments</title>
+        <title>Departments</title>
 		
 		<!-- Favicon -->
         <link rel="shortcut icon" href="<?php echo base_url()?>assets/img/favicon.png">
 	
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="<?php echo base_url()?>assets/css/bootstrap.min.css">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="<?php echo base_url()?>assets/css/style.css">
+		
+				
+
 		<!-- Fontfamily -->
 		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&amp;display=swap" rel="stylesheet">
 		
-		<!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="<?php echo base_url()?>assets/css/bootstrap.min.css">
+
 		
 		<!-- Feathericon CSS -->
         <link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/feather/feather.css">
@@ -25,15 +32,79 @@
 		<!-- Fontawesome CSS -->
 		<link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/fontawesome/css/fontawesome.min.css">
 		<link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/fontawesome/css/all.min.css">
+		<link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/toastr/toatr.css">
 
 		<!-- Datatables CSS -->
 		<link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/datatables/datatables.min.css">
 		
-		<!-- Main CSS -->
-        <link rel="stylesheet" href="<?php echo base_url()?>assets/css/style.css">
+		
+  
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var DepartmentSuccess = document.getElementById('toast-container');
+			if (DepartmentSuccess) {
+				DepartmentSuccess.style.display = 'block';
+				setTimeout(function() {
+					DepartmentSuccess.style.display = 'none';
+				}, 3000);
+			} 
+		});
+	</script>
     </head>
     <body>
-		
+	<?php
+	$DepartmentAddSuccess = $this->session->flashdata('DepartmentAddSuccess');
+	$DepartmentUpdateSuccess = $this->session->flashdata('DepartmentUpdateSuccess');
+	$DepartmentDeleteSuccess = $this->session->flashdata('DepartmentDeleteSuccess');
+	$DepartmentDeleteError = $this->session->flashdata('DepartmentDeleteError');
+	?>
+	<?php if (isset($DepartmentAddSuccess)) : ?>
+		<div id="toast-container" class="toast-container toast-top-right">
+			<div class="toast toast-success" aria-live="polite" style="display: block;">
+				<div class="toast-title text-center">Department Added Successfully</div>
+			</div>
+		</div>
+	<?php endif; ?>
+	<?php if (isset($DepartmentUpdateSuccess)) : ?>
+		<div id="toast-container" class="toast-container toast-top-right">
+			<div class="toast toast-success" aria-live="polite" style="display: block;">
+				<div class="toast-title text-center">Department Updated Successfully</div>
+			</div>
+		</div>
+	<?php endif; ?>
+	<?php if (isset($DepartmentDeleteSuccess)) : ?>
+		<div id="toast-container" class="toast-container toast-top-right">
+			<div class="toast toast-success" aria-live="polite" style="display: block;">
+				<div class="toast-title text-center">Department Deleted Successfully</div>
+			</div>
+		</div>
+	<?php endif; ?>
+	<?php if (isset($DepartmentDeleteError)) : ?>
+		<div id="toast-container" class="toast-container toast-top-right">
+			<div class="toast toast-error" aria-live="polite" style="display: block;">
+				<div class="toast-title text-center">Department Cannot be Deleted as Students are Associated !</div>
+			</div>
+		</div>
+	<?php endif; ?>
+	<div class="modal fade contentmodal show" id="deleteModal" tabindex="-1" aria-modal="true" role="dialog">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content doctor-profile">
+				<div class="modal-header pb-0 border-bottom-0  justify-content-end">
+					<button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i class="feather-x-circle"></i></button>
+				</div>
+				<div class="modal-body">
+					<div class="delete-wrap text-center">
+						<div class="del-icon"><i class="feather-x-circle"></i></div>
+						<h2>Are you Sure you want to Delete</h2>
+						<div class="submit-section">
+							<a href="" class="btn btn-success me-2" id="cancelsubjectbutton">Yes</a>
+							<a href="#" class="btn btn-danger" data-bs-dismiss="modal">No</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
 		
@@ -151,7 +222,7 @@
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="#">View all Notifications</a>
+							<a>View all Notifications </a>
 							</div>
 						</div>
 					</li>
@@ -197,266 +268,7 @@
 			<!-- /Header -->
 			
 			<!-- Sidebar -->
-            <div class="sidebar" id="sidebar">
-                <div class="sidebar-inner slimscroll">
-					<div id="sidebar-menu" class="sidebar-menu">
-						<ul>
-							<li class="menu-title"> 
-								<span>Main Menu</span>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="feather-grid"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="index.html">Admin Dashboard</a></li>
-									<li><a href="teacher-dashboard.html">Teacher Dashboard</a></li>
-									<li><a href="student-dashboard.html">Student Dashboard</a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fas fa-graduation-cap"></i> <span> Students</span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="students.html">Student List</a></li>
-									<li><a href="student-details.html">Student View</a></li>
-									<li><a href="add-student.html">Student Add</a></li>
-									<li><a href="edit-student.html">Student Edit</a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="teachers.html">Teacher List</a></li>
-									<li><a href="teacher-details.html">Teacher View</a></li>
-									<li><a href="add-teacher.html">Teacher Add</a></li>
-									<li><a href="edit-teacher.html">Teacher Edit</a></li>
-								</ul>
-							</li>
-							<li class="submenu active">
-								<a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="departments.html" class="active">Department List</a></li>
-									<li><a href="add-department.html">Department Add</a></li>
-									<li><a href="edit-department.html">Department Edit</a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="subjects.html">Subject List</a></li>
-									<li><a href="add-subject.html">Subject Add</a></li>
-									<li><a href="edit-subject.html">Subject Edit</a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fas fa-clipboard"></i> <span> Invoices</span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="invoices.html">Invoices List</a></li>
-									<li><a href="invoice-grid.html">Invoices Grid</a></li>
-									<li><a href="add-invoice.html">Add Invoices</a></li>
-									<li><a href="edit-invoice.html">Edit Invoices</a></li>
-									<li><a href="view-invoice.html">Invoices Details</a></li>
-									<li><a href="invoices-settings.html">Invoices Settings</a></li>
-								</ul>
-							</li>
-							<li class="menu-title"> 
-								<span>Management</span>
-							</li>
-
-							<li class="submenu">
-								<a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="fees-collections.html">Fees Collection</a></li>
-									<li><a href="expenses.html">Expenses</a></li>
-									<li><a href="salary.html">Salary</a></li>
-									<li><a href="add-fees-collection.html">Add Fees</a></li>
-									<li><a href="add-expenses.html">Add Expenses</a></li>
-									<li><a href="add-salary.html">Add Salary</a></li>
-								</ul>
-							</li>
-							<li> 
-								<a href="holiday.html"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>
-							</li>
-							<li> 
-								<a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
-							</li>
-							<li> 
-								<a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
-							</li>
-							<li> 
-								<a href="event.html"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
-							</li>
-							<li> 
-								<a href="time-table.html"><i class="fas fa-table"></i> <span>Time Table</span></a>
-							</li>
-							<li> 
-								<a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>
-							</li>
-							<li class="submenu">
-                                <a href="#"><i class="fa fa-newspaper"></i> <span> Blogs</span>
-                                    <span class="menu-arrow"></span>
-                                </a>
-                                <ul>
-                                    <li><a href="blog.html">All Blogs</a></li>
-                                    <li><a href="add-blog.html">Add Blog</a></li>
-                                    <li><a href="edit-blog.html">Edit Blog</a></li>
-                                    
-                                </ul>
-                            </li>
-							<li> 
-								<a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a>
-							</li>
-							<li class="menu-title"> 
-								<span>Pages</span>
-							</li>
-
-							<li class="submenu">
-								<a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="login.html">Login</a></li>
-									<li><a href="register.html">Register</a></li>
-									<li><a href="forgot-password.html">Forgot Password</a></li>
-									<li><a href="error-404.html">Error Page</a></li>
-								</ul>
-							</li>
-							<li> 
-								<a href="blank-page.html"><i class="fas fa-file"></i> <span>Blank Page</span></a>
-							</li>
-
-							<li class="menu-title"> 
-								<span>Others</span>
-							</li>
-
-							<li> 
-								<a href="sports.html"><i class="fas fa-baseball-ball"></i> <span>Sports</span></a>
-							</li>
-							<li> 
-								<a href="hostel.html"><i class="fas fa-hotel"></i> <span>Hostel</span></a>
-							</li>
-							<li> 
-								<a href="transport.html"><i class="fas fa-bus"></i> <span>Transport</span></a>
-							</li>
-							<li class="menu-title"> 
-								<span>UI Interface</span>
-							</li>
-							<li class="submenu">
-                                <a href="#"><i class="fab fa-get-pocket"></i> <span>Base UI </span> <span class="menu-arrow"></span></a>
-                                <ul>
-                                    <li><a href="alerts.html">Alerts</a></li>                                    
-                                    <li><a href="accordions.html">Accordions</a></li>
-                                    <li><a href="avatar.html">Avatar</a></li> 
-                                    <li><a href="badges.html">Badges</a></li>
-                                    <li><a href="buttons.html">Buttons</a></li>   
-                                    <li><a href="buttongroup.html">Button Group</a></li>                                  
-                                    <li><a href="breadcrumbs.html">Breadcrumb</a></li>
-                                    <li><a href="cards.html">Cards</a></li>
-                                    <li><a href="carousel.html">Carousel</a></li>                                   
-                                    <li><a href="dropdowns.html">Dropdowns</a></li>
-                                    <li><a href="grid.html">Grid</a></li>
-                                    <li><a href="images.html">Images</a></li>
-                                    <li><a href="lightbox.html">Lightbox</a></li>
-                                    <li><a href="media.html">Media</a></li>                              
-                                    <li><a href="modal.html">Modals</a></li>
-                                    <li><a href="offcanvas.html">Offcanvas</a></li>
-                                    <li><a href="pagination.html">Pagination</a></li>
-                                    <li><a href="popover.html">Popover</a></li>                                    
-                                    <li><a href="progress.html">Progress Bars</a></li>
-                                    <li><a href="placeholders.html">Placeholders</a></li>
-                                    <li><a href="rangeslider.html">Range Slider</a></li>                                    
-                                    <li><a href="spinners.html">Spinner</a></li>
-                                    <li><a href="sweetalerts.html">Sweet Alerts</a></li>
-                                    <li><a href="tab.html">Tabs</a></li>
-                                    <li><a href="toastr.html">Toasts</a></li>
-                                    <li><a href="tooltip.html">Tooltip</a></li>
-                                    <li><a href="typography.html">Typography</a></li>
-                                    <li><a href="video.html">Video</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i data-feather="box"></i> <span>Elements </span> <span class="menu-arrow"></span></a>
-                                <ul>
-                                    <li><a href="ribbon.html">Ribbon</a></li>
-                                    <li><a href="clipboard.html">Clipboard</a></li>
-                                    <li><a href="drag-drop.html">Drag & Drop</a></li>
-                                    <li><a href="rating.html">Rating</a></li>
-                                    <li><a href="text-editor.html">Text Editor</a></li>
-                                    <li><a href="counter.html">Counter</a></li>
-                                    <li><a href="scrollbar.html">Scrollbar</a></li>
-                                    <li><a href="notification.html">Notification</a></li>
-                                    <li><a href="stickynote.html">Sticky Note</a></li>
-                                    <li><a href="timeline.html">Timeline</a></li>
-                                    <li><a href="horizontal-timeline.html">Horizontal Timeline</a></li>
-                                    <li><a href="form-wizard.html">Form Wizard</a></li>
-                                </ul>
-                            </li>
-							<li class="submenu">
-								<a href="#"><i data-feather="bar-chart-2"></i> <span> Charts </span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="chart-apex.html">Apex Charts</a></li>
-									<li><a href="chart-js.html">Chart Js</a></li>
-									<li><a href="chart-morris.html">Morris Charts</a></li>
-									<li><a href="chart-flot.html">Flot Charts</a></li>
-									<li><a href="chart-peity.html">Peity Charts</a></li>
-									<li><a href="chart-c3.html">C3 Charts</a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i data-feather="award"></i> <span> Icons </span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
-									<li><a href="icon-feather.html">Feather Icons</a></li>
-									<li><a href="icon-ionic.html">Ionic Icons</a></li>
-									<li><a href="icon-material.html">Material Icons</a></li>
-									<li><a href="icon-pe7.html">Pe7 Icons</a></li>
-									<li><a href="icon-simpleline.html">Simpleline Icons</a></li>
-									<li><a href="icon-themify.html">Themify Icons</a></li>
-									<li><a href="icon-weather.html">Weather Icons</a></li>
-									<li><a href="icon-typicon.html">Typicon Icons</a></li>
-									<li><a href="icon-flag.html">Flag Icons</a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fas fa-columns"></i> <span> Forms </span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="form-basic-inputs.html">Basic Inputs </a></li>
-									<li><a href="form-input-groups.html">Input Groups </a></li>
-									<li><a href="form-horizontal.html">Horizontal Form </a></li>
-									<li><a href="form-vertical.html"> Vertical Form </a></li>
-									<li><a href="form-mask.html"> Form Mask </a></li>
-									<li><a href="form-validation.html"> Form Validation </a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fas fa-table"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li><a href="tables-basic.html">Basic Tables </a></li>
-									<li><a href="data-tables.html">Data Table </a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="javascript:void(0);"><i class="fas fa-code"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
-								<ul>
-									<li class="submenu">
-										<a href="javascript:void(0);"> <span>Level 1</span> <span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-											<li class="submenu">
-												<a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
-												<ul>
-													<li><a href="javascript:void(0);">Level 3</a></li>
-													<li><a href="javascript:void(0);">Level 3</a></li>
-												</ul>
-											</li>
-											<li><a href="javascript:void(0);"> <span>Level 2</span></a></li>
-										</ul>
-									</li>
-									<li>
-										<a href="javascript:void(0);"> <span>Level 1</span></a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-                </div>
-            </div>
+            
 			<!-- /Sidebar -->
 			
 			<!-- Page Wrapper -->
@@ -469,8 +281,9 @@
 							<div class="col">
 								<h3 class="page-title">Departments</h3>
 								<ul class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-									<li class="breadcrumb-item active">Departments</li>
+								<li><a href="Department">Department</a></li>
+									<!-- <li class=""><a href="ManageDepartment">/ Manage Department</a></li> -->
+									<li class="breadcrumb-item active">/ Manage Department</li>
 								</ul>
 							</div>
 						</div>
@@ -481,17 +294,17 @@
 						<div class="row">
 							<div class="col-lg-3 col-md-6">  
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search by ID ...">
+									<input type="text" class="form-control" placeholder="Search by ID ..." id="SearchById">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-6">  
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search by Name ...">
+									<input type="text" class="form-control" placeholder="Search by Name ..." id="SearchByName">
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-6">  
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search by Year ...">
+									<input type="text" class="form-control" placeholder="Search by Course ..." id="SearchByCourse">
 								</div>
 							</div>
 							<div class="col-lg-2">  
@@ -521,179 +334,45 @@
 									</div>
 									<!-- /Page Header -->
 								
-									<table class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+									<table id="DepartmentTable" class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
 										<thead class="student-thread">
 											<tr>
-												<th>
-													<div class="form-check check-tables">
-														<input class="form-check-input" type="checkbox"  value="something">
-													</div>
-												</th>
-												<th>ID</th>
-												<th>Name</th>
-												<th>HOD</th>
-												<th>Started Year</th>
-												<th>No of Students</th>
-												<th class="text-end">Action</th>
+											
+												<th class="text-center">Sr No.</th>
+												<th class="text-center">Department Id</th>
+												<th class="text-center">Department Name</th>
+												<th class="text-center">Course</th>
+												<!-- <th>Started Year</th> -->
+												<th class="text-center">No of Students</th>
+												<th class="text-center">Action</th>
 											</tr>
 										</thead>
 										<tbody>
+											<?php $i=0; foreach($department as $dept){?>
 											<tr>
-												<td>
-													<div class="form-check check-tables">
-														<input class="form-check-input" type="checkbox"  value="something">
-													</div>
+												<td class="text-center"><?php echo ++$i;?></td>
+												<td class="text-center">
+													<?php echo $dept->departmentid;?>
 												</td>
-												<td>PRE2209</td>
-												<td>
-													<h2>
-														<a>Computer Science Engg</a>
-													</h2>
-												</td>
-												<td>Aaliyah</td>
-												<td>1995</td>
-												<td>180</td>
-												<td class="text-end">
-													<div class="actions">
-														<a href="javascript:;" class="btn btn-sm bg-success-light me-2">
+												<td class="text-center"><?php echo $dept->departmentname;?></td>
+												<td class="text-center"><?php echo $dept->course;?></td>
+												<td class="text-center"><?php echo $dept->studentscount;?></td>
+												<td class="text-center">
+													<div>
+														<a href="ShowDepartmentData?id=<?php echo $dept->id;?>" class="btn btn-sm bg-success-light me-2">
 															<i class="feather-eye"></i>
 														</a>
-														<a href="edit-department.html" class="btn btn-sm bg-danger-light">
+														<a href="EditDepartment?id=<?php echo $dept->id;?>" class="btn btn-sm bg-danger-light">
 															<i class="feather-edit"></i>
 														</a>
+														<button  class="btn btn-sm bg-danger-light" onclick="deleteModal(<?php echo $dept->id?>);">
+																<i class="feather-trash-2"></i>
+															</button>
 													</div>
 												</td>
 											</tr>
-											<tr>
-												<td>
-													<div class="form-check check-tables">
-														<input class="form-check-input" type="checkbox"  value="something">
-													</div>
-												</td>
-												<td>PRE2213</td>
-												<td>
-													<h2>
-														<a>Mechanical Engg</a>
-													</h2>
-												</td>
-												<td>Malynne</td>
-												<td>1999</td>
-												<td>240</td>
-												<td class="text-end">
-													<div class="actions">
-														<a href="javascript:;" class="btn btn-sm bg-success-light me-2">
-															<i class="feather-eye"></i>
-														</a>
-														<a href="edit-department.html" class="btn btn-sm bg-danger-light">
-															<i class="feather-edit"></i>
-														</a>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<div class="form-check check-tables">
-														<input class="form-check-input" type="checkbox"  value="something">
-													</div>
-												</td>
-												<td>PRE2143</td>
-												<td>
-													<h2>
-														<a>Electrical Engg</a>
-													</h2>
-												</td>
-												<td>Levell Scott</td>
-												<td>1994</td>
-												<td>163</td>
-												<td class="text-end">
-													<div class="actions">
-														<a href="javascript:;" class="btn btn-sm bg-success-light me-2">
-															<i class="feather-eye"></i>
-														</a>
-														<a href="edit-department.html" class="btn btn-sm bg-danger-light">
-															<i class="feather-edit"></i>
-														</a>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<div class="form-check check-tables">
-														<input class="form-check-input" type="checkbox"  value="something">
-													</div>
-												</td>
-												<td>PRE2431</td>
-												<td>
-													<h2>
-														<a>Civil Engg</a>
-													</h2>
-												</td>
-												<td>Minnie</td>
-												<td>2000</td>
-												<td>195</td>
-												<td class="text-end">
-													<div class="actions">
-														<a href="javascript:;" class="btn btn-sm bg-success-light me-2">
-															<i class="feather-eye"></i>
-														</a>
-														<a href="edit-department.html" class="btn btn-sm bg-danger-light">
-															<i class="feather-edit"></i>
-														</a>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<div class="form-check check-tables">
-														<input class="form-check-input" type="checkbox"  value="something">
-													</div>
-												</td>
-												<td>PRE1534</td>
-												<td>
-													<h2>
-														<a>MCA</a>
-													</h2>
-												</td>
-												<td>Lois A</td>
-												<td>1992</td>
-												<td>200</td>
-												<td class="text-end">
-													<div class="actions">
-														<a href="javascript:;" class="btn btn-sm bg-success-light me-2">
-															<i class="feather-eye"></i>
-														</a>
-														<a href="edit-department.html" class="btn btn-sm bg-danger-light">
-															<i class="feather-edit"></i>
-														</a>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<div class="form-check check-tables">
-														<input class="form-check-input" type="checkbox"  value="something">
-													</div>
-												</td>
-												<td>PRE2153</td>
-												<td>
-													<h2>
-														<a>BCA</a>
-													</h2>
-												</td>
-												<td>Calvin</td>
-												<td>1992</td>
-												<td>152</td>
-												<td class="text-end">
-													<div class="actions">
-														<a href="javascript:;" class="btn btn-sm bg-success-light me-2">
-															<i class="feather-eye"></i>
-														</a>
-														<a href="edit-department.html" class="btn btn-sm bg-danger-light">
-															<i class="feather-edit"></i>
-														</a>
-													</div>
-												</td>
-											</tr>
+											<?php }?>
+									
 										</tbody>
 									</table>
 									
@@ -704,9 +383,7 @@
 				</div>
 
 				<!-- Footer -->
-				<footer>
-					<p>COPYRIGHT © 2023 DREAMSTECHNOLOGIES.</p>					
-				</footer>
+			
 				<!-- /Footer -->
 				
 			</div>
@@ -714,7 +391,9 @@
 			
         </div>
 		<!-- /Main Wrapper -->
-		
+		<footer>
+					<p>COPYRIGHT © 2023 DREAMSTECHNOLOGIES.</p>					
+				</footer>
 		<!-- jQuery -->
         <script src="<?php echo base_url()?>assets/js/jquery-3.7.1.min.js"></script>
 		
@@ -732,7 +411,47 @@
 		
 		<!-- Custom JS -->
 		<script src="<?php echo base_url()?>assets/js/script.js"></script>
+
+		<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.min.js"></script>
+	<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.js"></script>
+<script>
+	 function deleteModal(departmentid) {
+            const modalYesButton = document.getElementById('cancelsubjectbutton');
+                modalYesButton.href = 'DeleteDepartment?id=' + departmentid;
+    	$('#deleteModal').modal('show');
+		}
+
+		document.addEventListener('DOMContentLoaded', function() {
+        var searchByIdInput = document.querySelector('#SearchById');
+        var searchByNameInput = document.querySelector('#SearchByName');
+        var searchBycontactnumberInput = document.querySelector('#SearchByCourse');
+        function filterTable() {
+            var staffId = searchByIdInput.value.trim().toLowerCase();
+            var staffName = searchByNameInput.value.trim().toLowerCase();
+            var staffNumber = searchBycontactnumberInput.value.trim().toLowerCase();
+            var tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(function(row) {
+                var id = row.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
+                var name = row.querySelector('td:nth-child(3)').textContent.trim().toLowerCase();
+                var number = row.querySelector('td:nth-child(4)').textContent.trim().toLowerCase();
+				
+                if ((staffId === '' || id.includes(staffId)) &&
+                    (staffName === '' || name.includes(staffName))&&
+                    (staffNumber === '' || number.includes(staffNumber))
+					) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        searchByIdInput.addEventListener('input', filterTable);
+        searchByNameInput.addEventListener('input', filterTable);
+        searchBycontactnumberInput.addEventListener('input', filterTable);
+    });
+</script>
+
     </body>
 
-<!-- Mirrored from preschool.dreamstechnologies.com/template/departments.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Jan 2024 08:34:11 GMT -->
 </html>

@@ -7,7 +7,15 @@ class TransportModel extends CI_Model
         parent::__construct();
         $this->load->database();
     }
-
+    function GenerateUniqueID()
+    {
+        $randomNumber = mt_rand(100, 999);       
+        $randomAlphabeticCharacter1 = chr(rand(65, 90)); 
+        $randomAlphabeticCharacter2 = chr(rand(65, 90)); 
+        $randomAlphabeticCharacter3 = chr(rand(65, 90)); 
+        $shortIdentifier = $randomNumber . $randomAlphabeticCharacter1.$randomAlphabeticCharacter2;
+        return $shortIdentifier;
+    }
     function getTransports()
     {
         $Data = $this->db->get('transportdata');
@@ -39,7 +47,7 @@ class TransportModel extends CI_Model
     public function findTransportById($transportId)
     {
         $transport = $this->db->get_where('transportdata', array('id' => $transportId))->row();
-        if (empty( $transport )) {
+        if (empty($transport)) {
             print_r("No Transport");
         }
 
@@ -172,7 +180,7 @@ class TransportModel extends CI_Model
 
     function setDriverStatus($id, $status)
     {
-        $this->db->set('status',$status);
+        $this->db->set('status', $status);
         $this->db->where('driverid', $id);
         $this->db->update('driverdata');
     }
@@ -240,10 +248,10 @@ class TransportModel extends CI_Model
         $this->db->insert('driverattendancedata', $array);
     }
 
-    function markpresent($driverid,$date)
+    function markpresent($driverid, $date)
     {
         $this->db->where('driverid', $driverid);
-        $this->db->where('attendancedate',$date);
+        $this->db->where('attendancedate', $date);
         $this->db->update('driverattendancedata', array('attendance' => "Present"));
     }
 
@@ -274,7 +282,7 @@ class TransportModel extends CI_Model
 
     function findcount($driverId, $month)
     {
-        $data = $this->db->get_where('driverattendancedata', array('driverid' => $driverId, 'month' => $month,'attendance'=>'Present'))->result();
+        $data = $this->db->get_where('driverattendancedata', array('driverid' => $driverId, 'month' => $month, 'attendance' => 'Present'))->result();
         $rowCount = count($data);
         return $rowCount;
     }
@@ -309,7 +317,7 @@ class TransportModel extends CI_Model
 
     function updatedrivernameintransport($id, $data)
     {
-        $this->db->set('drivername',$data);
+        $this->db->set('drivername', $data);
         $this->db->where('driverid', $id);
         $this->db->update('transportdata');
         $affected_rows = $this->db->affected_rows();
@@ -409,13 +417,13 @@ class TransportModel extends CI_Model
 
     function getdrivers()
     {
-        $data=$this->db->get("driverdata");
+        $data = $this->db->get("driverdata");
         return $data->result();
     }
-    
+
     function getDriverWithStatus($status)
     {
-        $driver=$this->db->get_where('driverdata', array('status' => $status));
+        $driver = $this->db->get_where('driverdata', array('status' => $status));
         return $driver->result();
     }
     public function get_Last_Value_in_Driver_id()
@@ -428,30 +436,30 @@ class TransportModel extends CI_Model
         if ($query->num_rows() > 0) {
             $row = $query->row();
             $lastValue = $row->id;
-           $newvalue=$lastValue+1;
-           $newStdiD="DR".$newvalue;
-           return $newStdiD;
+            $newvalue = $lastValue + 1;
+            $newStdiD = "DR" . $newvalue;
+            return $newStdiD;
         } else {
             return null;
         }
     }
 
-    
+
     public function getdriverwithid($id)
     {
-        $driver=$this->db->get_where('driverdata', array('driverid' => $id))->row();
+        $driver = $this->db->get_where('driverdata', array('driverid' => $id))->row();
         return $driver;
     }
 
     function getdriverid($id)
     {
-        $driver=$this->db->get_where('driverdata', array('id' => $id))->row();
+        $driver = $this->db->get_where('driverdata', array('id' => $id))->row();
         return $driver;
     }
-    function UpdateDriver($id,$formdata)
+    function UpdateDriver($id, $formdata)
     {
-        $this->db->where('id',$id);
-        $this->db->update('driverdata',$formdata);
+        $this->db->where('id', $id);
+        $this->db->update('driverdata', $formdata);
     }
     // public function getAllRoutes()
     // {
@@ -495,9 +503,9 @@ class TransportModel extends CI_Model
         if ($query->num_rows() > 0) {
             $row = $query->row();
             $lastValue = $row->id;
-           $newvalue=$lastValue+1;
-           $newStdiD="STP".$newvalue;
-           return $newStdiD;
+            $newvalue = $lastValue + 1;
+            $newStdiD = "STP" . $newvalue;
+            return $newStdiD;
         } else {
             return null;
         }
@@ -507,7 +515,7 @@ class TransportModel extends CI_Model
     {
         $this->db->delete('stopdata', array('id' => $id));
     }
-   
+
     // function updateRouteData($Routeid,$data)
     // {
     //    
@@ -523,7 +531,7 @@ class TransportModel extends CI_Model
         return $Stop;
     }
 
-    function updateStop($Stopid,$FormData)
+    function updateStop($Stopid, $FormData)
     {
         $this->db->where('id', $Stopid);
         $this->db->update("stopdata", $FormData);
@@ -547,7 +555,7 @@ class TransportModel extends CI_Model
 
     public function findStopswhererouteid($routeid)
     {
-        $Stops=$this->db->get_where("stopdata", array("routeid"=> $routeid))->result();
+        $Stops = $this->db->get_where("stopdata", array("routeid" => $routeid))->result();
         return $Stops;
     }
 
@@ -559,7 +567,7 @@ class TransportModel extends CI_Model
 
     function getVehicles()
     {
-        $vehicles=$this->db->get("vehicledata");
+        $vehicles = $this->db->get("vehicledata");
         return $vehicles->result();
     }
     function addVehicletoDb($data)
@@ -577,9 +585,9 @@ class TransportModel extends CI_Model
         if ($query->num_rows() > 0) {
             $row = $query->row();
             $lastValue = $row->id;
-           $newvalue=$lastValue+1;
-           $newStdiD="VH".$newvalue;
-           return $newStdiD;
+            $newvalue = $lastValue + 1;
+            $newStdiD = "VH" . $newvalue;
+            return $newStdiD;
         } else {
             return null;
         }
@@ -587,7 +595,7 @@ class TransportModel extends CI_Model
 
     function findVehicleById($vehicleid)
     {
-        $vehicle=$this->db->get_where('vehicledata', array('id' => $vehicleid))->row();
+        $vehicle = $this->db->get_where('vehicledata', array('id' => $vehicleid))->row();
         return $vehicle;
     }
     // public function getAllRoutes()
@@ -601,7 +609,7 @@ class TransportModel extends CI_Model
         $this->db->delete('vehicledata', array('id' => $vehicleid));
     }
 
-     function updateVehicleData($vehicleid,$data)
+    function updateVehicleData($vehicleid, $data)
     {
         $this->db->where('id', $vehicleid);
         $this->db->update("vehicledata", $data);
@@ -609,67 +617,74 @@ class TransportModel extends CI_Model
 
     function getVehicleswithStatus($status)
     {
-        $vehicle=$this->db->get_where('vehicledata', array('status' => $status));
+        $vehicle = $this->db->get_where('vehicledata', array('status' => $status));
         return $vehicle->result();
     }
 
     function getroutewithid($routeid)
     {
-        $Route=$this->db->get_where('routedata',array('id'=>$routeid))->row();
+        $Route = $this->db->get_where('routedata', array('id' => $routeid))->row();
         return $Route;
     }
 
     function gettransportwithdriverid($driverid)
     {
-        $Route=$this->db->get_where('transportdata',array('driverid'=>$driverid))->row();
+        $Route = $this->db->get_where('transportdata', array('driverid' => $driverid))->row();
         return $Route;
     }
 
     function getvehiclewithregid($Vehicleid)
     {
-        $Vehicle=$this->db->get_where('vehicledata',array('vehicleserialnumber'=>$Vehicleid))->row();
+        $Vehicle = $this->db->get_where('vehicledata', array('vehicleserialnumber' => $Vehicleid))->row();
         return $Vehicle;
     }
 
     function findTransportByvehicleid($vehicleid)
     {
-        $transport=$this->db->get_where('transportdata',array('vehicleid'=>$vehicleid))->row();
+        $transport = $this->db->get_where('transportdata', array('vehicleid' => $vehicleid))->row();
         return $transport;
     }
 
     function findStudentsBytransportid($transportid)
     {
-        $Students=$this->db->get_where('transportservicedata',array('transportid'=>$transportid))->result();
+        $Students = $this->db->get_where('transportservicedata', array('transportid' => $transportid))->result();
         return $Students;
     }
 
     function getTransportId($id)
     {
-        $transport=$this->db->get_where('transportdata',array('id'=>$id))->row();
+        $transport = $this->db->get_where('transportdata', array('id' => $id))->row();
         return $transport;
     }
 
     function gettransportservicecountforthistransport($transportid)
     {
-        $count=$this->db->get_where('transportservicedata',array('transportid'=>$transportid))->num_rows();
+        $count = $this->db->get_where('transportservicedata', array('transportid' => $transportid))->num_rows();
         return $count;
     }
 
     function gettransportwithrouteid($routeid)
     {
-        $transport=$this->db->get_where('transportdata',array('routeid'=>$routeid))->row();
+        $transport = $this->db->get_where('transportdata', array('routeid' => $routeid))->row();
         return $transport;
     }
 
     function getstopbyId($stopid)
     {
-        $stop=$this->db->get_where('stopdata',array('id'=>$stopid))->row();
+        $stop = $this->db->get_where('stopdata', array('id' => $stopid))->row();
         return $stop;
     }
 
     function gettransportservicewithstopid($stopid)
     {
-        $transportservice=$this->db->get_where('transportservicedata',array('stopid'=>$stopid))->row();
+        $transportservice = $this->db->get_where('transportservicedata', array('stopid' => $stopid))->row();
+        return $transportservice;
+    }
+
+    function getTransportServicewithstudentid($studentid)
+    {
+        $query = $this->db->get_where("transportservicedata", array("studentid"=>$studentid));
+        $transportservice = $query->row();
         return $transportservice;
     }
 }

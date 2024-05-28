@@ -53,9 +53,9 @@ class GeneralProficiencyController extends CI_Controller
 
     function CoordinatorDashboard()
     {
-        if (!isset($_SESSION['userloggedin'])) {
-            redirect('GeneralProficiencyController/Login');
-        }
+        // if (!isset($_SESSION['userloggedin'])) {
+        //     redirect('GeneralProficiencyController/Login');
+        // }
         $this->load->view('layout/sidebar');
         $this->load->view("coordinatorDashboard");
         $this->load->view("layout/footer");

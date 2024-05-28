@@ -26,6 +26,7 @@ class TransportController extends CI_Controller
             return redirect("StaffController/login");
         }
     }
+    
     public function RoutesList()
     {
         $role=$this->session->userdata('role');
@@ -33,6 +34,7 @@ class TransportController extends CI_Controller
         {
         $Routes['routes'] = $this->TransportModel->getRoutes();
         $this->load->view('Transportviews/Routes', $Routes);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -47,8 +49,8 @@ class TransportController extends CI_Controller
         $role=$this->session->userdata('role');
         if($this->session->userdata('userloggedin') && $role=="Admin")
         {
-            
             $this->load->view('Transportviews/addRoute');
+            $this->load->view('layout/transportsidebar');
     }
     else if($this->session->userdata('userloggedin') && $role!="Admin")
     {
@@ -66,12 +68,8 @@ class TransportController extends CI_Controller
         {
         $formdata = $this->input->post();
         $this->load->model('TransportModel');
-        $serialnumber = $this->TransportModel->get_Last_Value_in_Routes_id();
-        if ($serialnumber == null) {
-            $formdata['serialnumber'] = "RT1";
-        } else {
-            $formdata['serialnumber'] = $serialnumber;
-        }
+        $serialnumber = $this->TransportModel->GenerateUniqueID();
+        $formdata['serialnumber'] = "RT-".$serialnumber;
         $this->load->model('TransportModel');
         $this->TransportModel->addRoutetoDb($formdata);
         $this->session->set_flashdata('RouteAddSuccess', 'Route Added Successfully ..!');
@@ -94,7 +92,8 @@ class TransportController extends CI_Controller
         $RouteId = $this->input->get('id');
         $this->load->model('TransportModel');
         $Route['route'] = $this->TransportModel->findRouteById($RouteId);
-        $this->load->view('Transportviews/RouteData', $Route);}
+        $this->load->view('Transportviews/RouteData', $Route);
+        $this->load->view('layout/transportsidebar');}
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
             return redirect("StaffController/UnAuthorizedAccess");
@@ -113,6 +112,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Route['route'] = $this->TransportModel->findRouteById($RouteId);
         $this->load->view('Transportviews/editRoutes', $Route);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -184,6 +184,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Stops['stops'] = $this->TransportModel->getStops();
         $this->load->view("Transportviews/Stops", $Stops);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -202,6 +203,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Routes['routes'] = $this->TransportModel->getAllRoutes();
         $this->load->view("Transportviews/addStop", $Routes);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -219,13 +221,9 @@ class TransportController extends CI_Controller
         {
         $formData = $this->input->post();
         $this->load->model('TransportModel');
-        $stopserialnumber = $this->TransportModel->get_Last_Value_in_Stops_id();
+        $stopserialnumber = $this->TransportModel->GenerateUniqueID();
         $route = $this->TransportModel->findRouteByname(($formData['routename']));
-        if ($stopserialnumber == null) {
-            $formData['stopserialnumber'] = "STP1";
-        } else {
-            $formData['stopserialnumber'] = $stopserialnumber;
-        }
+        $formData['stopserialnumber'] = "STP-".$stopserialnumber;
         $formData['routeid'] = $route->id;
         $this->TransportModel->addStoptoDb($formData);
         $this->session->set_flashdata('StopAddSuccess', 'Stop Added Successfully ..!');
@@ -281,6 +279,7 @@ class TransportController extends CI_Controller
         $stop['stop'] = $this->TransportModel->findStopByid($StopId);
         $Routes['routes'] = $this->TransportModel->getAllRoutes();
         $this->load->view('Transportviews/editStop', array_merge($stop, $Routes));
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -339,6 +338,7 @@ class TransportController extends CI_Controller
         $stop['stop'] = $this->TransportModel->findStopByid($StopId);
         $Routes['routes'] = $this->TransportModel->getAllRoutes();
         $this->load->view('Transportviews/ShowStopData', array_merge($stop, $Routes));
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -357,6 +357,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Vehicles['vehicles'] = $this->TransportModel->getVehicles();
         $this->load->view('Transportviews/Vehicles', $Vehicles);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -372,7 +373,8 @@ class TransportController extends CI_Controller
         $role=$this->session->userdata('role');
         if($this->session->userdata('userloggedin') && $role=="Admin")
         {
-        $this->load->view('Transportviews/addVehicle');
+            $this->load->view('Transportviews/addVehicle');
+            $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -417,12 +419,8 @@ class TransportController extends CI_Controller
         $formdata['busimages'] = $photoname;
         $formdata['availablecapacity'] = $formdata['totalseatingcapacity'];
         $this->load->model('TransportModel');
-        $vehicleid = $this->TransportModel->get_Last_Value_in_Vehicles_id();
-        if ($vehicleid == null) {
-            $formdata['vehicleserialnumber'] = "VH1";
-        } else {
-            $formdata['vehicleserialnumber'] = $vehicleid;
-        }
+        $vehicleid = $this->TransportModel->GenerateUniqueID();
+        $formdata['vehicleserialnumber'] = "VH-".$vehicleid;
         $this->TransportModel->addVehicletoDb($formdata);
         $this->session->set_flashdata('VehicleAddSuccess', 'Vehicle Added Successfully ..!');
         return redirect('TransportController/VehicleList');
@@ -476,9 +474,11 @@ class TransportController extends CI_Controller
             $countn = $this->TransportModel->findStudentsBytransportid($transport->transportid);
             $this->session->set_userdata('student_count', $countn);
             $this->load->view('Transportviews/editVehicle', array_merge($Vehicle, $studentcount));
+            $this->load->view('layout/transportsidebar');
         } else {
             $this->session->unset_userdata('student_count');
             $this->load->view('Transportviews/editVehicle', $Vehicle);
+            $this->load->view('layout/transportsidebar');
         }
     }
     else if($this->session->userdata('userloggedin') && $role!="Admin")
@@ -557,6 +557,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Vehicle['vehicle'] = $this->TransportModel->findVehicleById($vehicleid);
         $this->load->view('Transportviews/ShowVehicleData', $Vehicle);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -575,6 +576,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Drivers['drivers'] = $this->TransportModel->getdrivers();
         $this->load->view('Transportviews/DriverList', $Drivers);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -590,7 +592,8 @@ class TransportController extends CI_Controller
         $role=$this->session->userdata('role');
         if($this->session->userdata('userloggedin') && $role=="Admin")
         {
-        $this->load->view('Transportviews/addDriver');
+            $this->load->view('Transportviews/addDriver');
+            $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -623,12 +626,8 @@ class TransportController extends CI_Controller
         $totalname = $formdata['firstname'] . " " . $formdata['lastname'];
         $formdata['firstname_lastname'] = $totalname;
         $this->load->model('TransportModel');
-        $driverid = $this->TransportModel->get_Last_Value_in_Driver_id();
-        if ($driverid == null) {
-            $formdata['driverid'] = "DR1";
-        } else {
-            $formdata['driverid'] = $driverid;
-        }
+        $driverid = $this->TransportModel->GenerateUniqueID();
+        $formdata['driverid'] = "DR-".$driverid;
         $this->TransportModel->addDrivertoDb($formdata);
         $this->session->set_flashdata('DriverAddSuccess', 'Driver Added Successfully ..!');
         return redirect('TransportController/DriverList');
@@ -678,6 +677,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Driver['driver'] = $this->TransportModel->getdriverid($id);
         $this->load->view('Transportviews/editDriver', $Driver);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -747,6 +747,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Driver['driver'] = $this->TransportModel->getdriverid($id);
         $this->load->view('Transportviews/ShowDriverData', $Driver);
+        $this->load->view('layout/transportsidebar');
         } else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
             return redirect("StaffController/UnAuthorizedAccess");
@@ -767,6 +768,7 @@ class TransportController extends CI_Controller
         $Drivers['drivers'] = $this->TransportModel->getdrivers();
         $Vehicles['vehicles'] = $this->TransportModel->getVehicles();
         $this->load->view('Transportviews/transport', array_merge($Transports, $Routes, $Drivers, $Vehicles));
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -788,6 +790,7 @@ class TransportController extends CI_Controller
         $Drivers['drivers'] = $this->TransportModel->getDriverWithStatus("Inactive");
         $Vehicles['vehicles'] = $this->TransportModel->getVehicleswithStatus("Inactive");
         $this->load->view('Transportviews/transports', array_merge($Transports, $Routes, $Drivers, $Vehicles));
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -805,12 +808,8 @@ class TransportController extends CI_Controller
         {
         $formdata = $this->input->post();
         $this->load->model('TransportModel');
-        $transportid = $this->TransportModel->get_Last_Value_in_transports_id();
-        if ($transportid == null) {
-            $formdata['transportid'] = "TR1";
-        } else {
-            $formdata['transportid'] = $transportid;
-        }
+        $transportid = $this->TransportModel->GenerateUniqueID();
+        $formdata['transportid'] = "TR-".$transportid;
         $route = $this->TransportModel->getRouteIdByName(($formdata['routename']));
 
         $Vehicle = $this->TransportModel->findBusIdByRegNumber($formdata['vehiclenumber']);
@@ -854,6 +853,7 @@ class TransportController extends CI_Controller
         $this->session->set_userdata('prevVehicleId', $transportn->vehicleid);
         $this->session->set_userdata('PrevDriverid', $transportn->driverid);
         $this->load->view('Transportviews/editTransport', array_merge($Transport, $Routes, $Drivers, $Vehicles));
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -956,6 +956,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Transport['transport'] = $this->TransportModel->findTransportById($id);
         $this->load->view('Transportviews/ShowTransportData', array_merge($Transport, $Routes, $Drivers, $Vehicles));
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -974,6 +975,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $AllotedStudents['allotedstudents'] = $this->TransportModel->getAllAllotedStudents();
         $this->load->view('Transportviews/transportserviceusagelist', $AllotedStudents);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -992,6 +994,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Transports['transports'] = $this->TransportModel->getTransports();
         $this->load->view('Transportviews/AllotStudent', $Transports);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -1052,6 +1055,7 @@ class TransportController extends CI_Controller
         $this->session->set_userdata('prevTransportID', $Transportservicedata->transportid);
         $Transports['transports'] = $this->TransportModel->getTransports();
         $this->load->view('Transportviews/editAllotStudentData', array_merge($data, $Transports));
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
     {
@@ -1117,6 +1121,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Transportservicedata['data'] = $this->TransportModel->getTransportServiceWithId($id);
         $this->load->view('Transportviews/ShowTransportServiceData', $Transportservicedata);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -1201,11 +1206,11 @@ class TransportController extends CI_Controller
         if ($transportservicedata) {
             $response = array('message' => "Student Already registered");
         } else {
-            $this->load->model('GeneralProficiencyModel');
-            $student = $this->GeneralProficiencyModel->findByRegNum($regnumber);
+            $this->load->model("StudentModel");
+            $student = $this->StudentModel->findByRegNum($regnumber);
             if ($student) {
                 $studentfullname = $student->student_first_name . " " . $student->student_last_name;
-                $response = array('studentname' => $studentfullname, 'Course' => $student->type, 'Branch' => $student->branch, 'Year' => $student->year);
+                $response = array('studentname' => $studentfullname, 'Course' => $student->type, 'Branch' => $student->department, 'Year' => $student->year);
             } else {
                 $response = array('message' => "No student Found");
             }
@@ -1222,6 +1227,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $attendance['driverattendanceata'] = $this->TransportModel->getdriverattendancedata();
         $this->load->view('Transportviews/DriverAttendance', $attendance);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -1240,6 +1246,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Drivers['drivers'] = $this->TransportModel->getdrivers();
         $this->load->view('Transportviews/MarkDriverattendance', $Drivers);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -1299,6 +1306,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Salary['salarydata'] = $this->TransportModel->getSalaries();
         $this->load->view('Transportviews/driverSalary', $Salary);
+        $this->load->view('layout/transportsidebar');
         }
         else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
@@ -1317,6 +1325,7 @@ class TransportController extends CI_Controller
         $this->load->model('TransportModel');
         $Salary['salarydata'] = $this->TransportModel->getSalaries();
         $this->load->view('Transportviews/PayDriverSalary', $Salary);
+        $this->load->view('layout/transportsidebar');
         } else if($this->session->userdata('userloggedin') && $role!="Admin")
         {
             return redirect("StaffController/UnAuthorizedAccess");
@@ -1371,7 +1380,4 @@ class TransportController extends CI_Controller
         $this->output->set_content_type('application/json');
         $this->output->set_output(json_encode($response));
     }
-
-
-
 }
