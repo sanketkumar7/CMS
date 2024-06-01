@@ -8,6 +8,8 @@ function __construct()
     parent::__construct();
     $this->load->model("FeesModel");
     $this->load->library("session");
+    date_default_timezone_set("Asia/Kolkata");
+
 }
 
 function index()
@@ -85,8 +87,8 @@ $this->load->view("layout/feesSidebar");
 function GetFeesHistory()
 {
 $id=$this->input->get("id");
-$data['data']=$this->FeesModel->getFeesHistory($id);
-
+$data=$this->FeesModel->getFeesHistory($id);
+// print_r($data);
 if(!empty($data))
 {
     $response=array("message"=>"Data Found",
@@ -107,15 +109,42 @@ $this->output->set_output(json_encode($response));
 // }
 
 
-// function payFees()
-// {
 
-// }
+function PayCollegeFees()
+{
+    $this->load->view("FeesViews/payFees");
+    $this->load->view("layout/feesSidebar");
+}
 
-// function getFeesdata()
-// {
+function payfees()
+{
+        $formdata=$this->input->post();
+        $totalfeespaid=$formdata["totalfeespaid"]+$formdata["currentpayment"];
+        $id=$formdata["studentid"];
+        if($totalfeespaid==$formdata["totalfees"])
+        {
+            $formdata["totalfeespaid"]=$totalfeespaid;
+            $formdata["remainingfees"]=0;
+            $formdata["status"]="Complete";
+            $this->load->model("StudentModel");
+            $this->StudentModel->updateFeeStatus($id);
+            $this->FeesModel->updateFeeData($id,$formdata);
+            unset($formdata["status"]);
+            $formdata["date"]=date('d-m-Y');
+            $this->FeesModel->insertfeeData($formdata);
+        }
+        else{
+            $formdata["totalfeespaid"]=$totalfeespaid;
+            $formdata["remainingfees"]=$formdata["totalfees"]-$totalfeespaid;
+            $this->FeesModel->updateFeeData($id,$formdata);
+            $formdata["date"]=date('d-m-Y');
 
-// }
+            $this->FeesModel->insertfeeData($formdata);
+        }
+
+        return redirect("Fees/FeesHistory");
+}
+
 
 }
 

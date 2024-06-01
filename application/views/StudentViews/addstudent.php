@@ -68,41 +68,8 @@
 			cursor: pointer;
 		}
 
-		.loader-wrapper {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(255, 255, 255, 0.7);
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			z-index: 9999;
-		}
+		
 
-		.loader {
-			border: 8px solid #f3f3f3;
-			border-radius: 50%;
-			border-top: 8px solid #3498db;
-			width: 50px;
-			height: 50px;
-			animation: spin 1s linear infinite;
-		}
-
-		@keyframes spin {
-			0% {
-				transform: rotate(0deg);
-			}
-
-			100% {
-				transform: rotate(360deg);
-			}
-		}
-
-		.sidebar {
-			display: none;
-		}
 	</style>
 
 
@@ -131,13 +98,6 @@
 				}, 2000);
 			}
 		});
-
-		function showElement() {
-			var element = document.getElementById("sidebar");
-			console.log(document.getElementById("sidebar"));
-			element.style.display = "block";
-		}
-		setTimeout(showElement, 50);
 	</script>
 	<script>
 		// document.addEventListener('DOMContentLoaded', function() {
@@ -676,7 +636,7 @@
 										<div class="col-12 col-sm-4">
 											<div class="form-group local-forms">
 												<label>Category<span class="login-danger">*</span></label>
-												<select class="form-select" name="category" id="category" style="height:45px;font-size:15px !important;">
+												<select class="form-select" name="category" id="category" style="height:45px;font-size:15px !important;" onchange="getfees()">
 													<option value="NA">Please Select Category</option>
 													<option>General</option>
 													<option>Obc</option>
@@ -743,14 +703,8 @@
 													Department is Required.
 												</p>
 											</div>
-										</div>
-										<div class="col-12 col-sm-4 d-none">
-											<div class="form-group local-forms">
-												<label> <span class="login-danger">*</span></label>
-												<input class="form-control" type="text" name="department">
 											</div>
-										</div>
-										<div class="col-12 col-sm-4">
+											<div class="col-12 col-sm-4">
 											<div class="form-group local-forms">
 												<label>Year<span class="login-danger">*</span></label>
 												<select class="form-select" style="height:45px;font-size:15px !important;" name="year" id="year">
@@ -774,12 +728,16 @@
 										<div class="col-12 col-sm-4">
 											<div class="form-group local-forms">
 												<label>Fees<span class="login-danger">*</span></label>
-												<input class="form-control" type="text" placeholder="eg. 70000" name="collegefees" id="collegefees" >
+												<input class="form-control" type="text" placeholder="Fees" name="collegefees" id="collegefees" readonly>
 												<div class="invalid-feedback" style="display:none;" id="collegefees_errormessage">
 													fees is Required.
 												</div>
 											</div>
 										</div>
+									
+										
+										</div>
+									
 										<h5 class="card-title">Address</h5>
 										<div class="row">
 											<div class="col-md-6">
@@ -794,43 +752,43 @@
 													<div class="form-group">
 														<label>State <span class="login-danger">*</span></label>
 														<select class="form-select" style="height:45px;font-size:15px !important;" name="state" id="state" onchange="adddisableopt();">
-															<option value="NA">Please Select State </option>
-															<option>Andhra Pradesh</option>
-															<option>Arunachal Pradesh</option>
-															<option>Assam</option>
-															<option>Bihar</option>
-															<option>Chhattisgarh</option>
-															<option>Gujarat</option>
-															<option>Haryana</option>
-															<option>Himachal Pradesh</option>
-															<option>Jammu and Kashmir</option>
-															<option>Goa</option>
-															<option>Jharkhand</option>
-															<option>Karnataka</option>
-															<option>Kerala</option>
-															<option>Madhya Pradesh</option>
-															<option>Maharashtra</option>
-															<option>Manipur</option>
-															<option>Meghalaya</option>
-															<option>Mizoram</option>
-															<option>Nagaland</option>
-															<option>Odisha</option>
-															<option>Punjab</option>
-															<option>Rajasthan</option>
-															<option>Sikkim</option>
-															<option>Tamil Nadu</option>
-															<option>Telangana</option>
-															<option>Tripura</option>
-															<option>Uttarakhand</option>
-															<option>Uttar Pradesh</option>
-															<option>West Bengal</option>
-															<option>Andaman and Nicobar Islands</option>
-															<option>Chandigarh</option>
-															<option>Dadra and Nagar Haveli</option>
-															<option>Daman and Diu</option>
-															<option>Delhi</option>
-															<option>Lakshadweep</option>
-															<option>Puducherry</option>
+															<option value="NA">PLEASE SELECT STATE</option>
+															<option value="ANDHRA PRADESH">ANDHRA PRADESH</option>
+															<option value="ARUNACHAL PRADESH">ARUNACHAL PRADESH</option>
+															<option value="ASSAM">ASSAM</option>
+															<option value="BIHAR">BIHAR</option>
+															<option value="CHHATTISGARH">CHHATTISGARH</option>
+															<option value="GUJARAT">GUJARAT</option>
+															<option value="HARYANA">HARYANA</option>
+															<option value="HIMACHAL PRADESH">HIMACHAL PRADESH</option>
+															<option value="JAMMU AND KASHMIR">JAMMU AND KASHMIR</option>
+															<option value="GOA">GOA</option>
+															<option value="JHARKHAND">JHARKHAND</option>
+															<option value="KARNATAKA">KARNATAKA</option>
+															<option value="KERALA">KERALA</option>
+															<option value="MADHYA PRADESH">MADHYA PRADESH</option>
+															<option value="MAHARASHTRA">MAHARASHTRA</option>
+															<option value="MANIPUR">MANIPUR</option>
+															<option value="MEGHALAYA">MEGHALAYA</option>
+															<option value="MIZORAM">MIZORAM</option>
+															<option value="NAGALAND">NAGALAND</option>
+															<option value="ODISHA">ODISHA</option>
+															<option value="PUNJAB">PUNJAB</option>
+															<option value="RAJASTHAN">RAJASTHAN</option>
+															<option value="SIKKIM">SIKKIM</option>
+															<option value="TAMIL NADU">TAMIL NADU</option>
+															<option value="TELANGANA">TELANGANA</option>
+															<option value="TRIPURA">TRIPURA</option>
+															<option value="UTTARAKHAND">UTTARAKHAND</option>
+															<option value="UTTAR PRADESH">UTTAR PRADESH</option>
+															<option value="WEST BENGAL">WEST BENGAL</option>
+															<option value="ANDAMAN AND NICOBAR ISLANDS">ANDAMAN AND NICOBAR ISLANDS</option>
+															<option value="CHANDIGARH">CHANDIGARH</option>
+															<option value="DADRA AND NAGAR HAVELI">DADRA AND NAGAR HAVELI</option>
+															<option value="DAMAN AND DIU">DAMAN AND DIU</option>
+															<option value="DELHI">DELHI</option>
+															<option value="LAKSHADWEEP">LAKSHADWEEP</option>
+															<option value="PUDUCHERRY">PUDUCHERRY</option>
 														</select>
 														<div class="invalid-feedback" style="display:none;" id="state_errormessage">
 															State is Required.
@@ -1093,12 +1051,33 @@
 			}
 		}
 
-		function adddisableopt()
-		{
-			document.getElementById("state").firstElementChild.disabled=true;
+		function adddisableopt() {
+			document.getElementById("state").firstElementChild.disabled = true;
+		}
+
+		function getfees() {
+			document.getElementById("category").firstElementChild.setAttribute("disabled", "true");
+			let category = document.getElementById("category").value;
+			fetch("getFeesforCategory?category=" + category)
+				.then((response) => {
+					if (!response.ok) {
+						return;
+					}
+					return response.json();
+				})
+				.then((data) => {
+					console.log(data);
+					if (data.message == "Data Found") {
+						document.getElementById("collegefees").value = data.fees;
+					} else {
+						return;
+					}
+				})
+				.catch((error) => {
+					console.log(error);
+				})
 		}
 	</script>
 </body>
 
 </html>
-

@@ -58,13 +58,10 @@ class StudentController extends CI_Controller
             if (!$this->upload->do_upload('studentphoto')) {
             } else {
                 $photo_data = array('upload_data' => $this->upload->data());
-                // Photo uploaded successfully
             }
             if (!$this->upload->do_upload('studentsign')) {
-                // Handle error for student sign upload
             } else {
                 $sign_data = array('upload_data' => $this->upload->data());
-                // Sign uploaded successfully
             }
     
             $uploaded_photo = $_FILES['studentphoto'];
@@ -73,19 +70,23 @@ class StudentController extends CI_Controller
             $Student_data = $this->input->post();
             $Student_data['studentphoto'] = $photoname;
             $Student_data['studentsign'] = $uploaded_sign;
-            $student_id = $this->StudentModel->get_Last_Value_in_student_id();
-            if ($student_id == null) {
-                $Student_data['student_id'] = "STD1";
-            } else {
-                $Student_data['student_id'] = $student_id;
-            }
-      
-            // print_r($Student_data);
+            $student_id = $this->StudentModel->GenerateUniqueID();
+            $Student_data["student_id"]=$student_id;
+            $Student_data["collegefeesstatus"]="Incomplete";
             $deptid=$Student_data['departmentid'];
             $department=$this->DepartmentModel->getDepartmentByDepartmentId($deptid);
             $this->DepartmentModel->incrementStudentCount($deptid,$department->studentscount);
             $Student_data['department']=$department->departmentname;
             $this->StudentModel->addStudent($Student_data);
+            $this->load->model("FeesModel");
+            $data=array(
+                "studentid"=>$student_id,
+                "totalfees"=>$Student_data["collegefees"],
+                "totalfeespaid"=>0,
+                "remainingfees"=>$Student_data["collegefees"],
+                "status"=>"Incomplete",
+            );
+            $this->FeesModel->insertData($data);
             $this->session->set_flashdata('StudentAddSuccess', 'Student Added Successfully ..!');
             return redirect('StudentController/ShowStudents');
         } else if ($this->session->userdata('userloggedin') && $role != "Admin") {
@@ -93,7 +94,6 @@ class StudentController extends CI_Controller
         } else {
             return redirect("StaffController/Login");
         }
-        
     }
 
     public function ShowStudents()
@@ -236,12 +236,42 @@ class StudentController extends CI_Controller
      
     }
 
-    // public function ShowHalfFilledFormList()
-    // {
-    //     $this->load->model('StudentModel');
-    //     $students['students'] = $this->StudentModel->getAllStudents();
-    //     $this->load->view('StudentViews/StudentsEmptyformslist', $students);
-    // }
+    function getFeesforCategory()
+    {
+        $category=$this->input->get("category");
+        $this->load->model("FeesModel");
+        $categoryfees=$this->FeesModel->getFeesbyCategory($category);
+        if($categoryfees!=null || !empty($categoryfees))
+        {
+            $response=array("message"=>"Data Found",
+            "fees"=>$categoryfees->fees);
+        }
+        else{
+            $response=array("message"=>"No Data Found");
+        }
+        $this->output->set_content_type("application/json");
+        $this->output->set_output(json_encode($response));
+    }
+
+    function getstudentfees()
+    {
+     $id=$this->input->get("id");
+     $this->load->model("FeesModel");
+     $student=$this->FeesModel->getStudentFees($id);
+     if($student!=null)
+     {
+        $response=array("message"=>"Student Found",
+                        "data"=>$student
+                        );
+     }
+     else{
+        $response=array("message"=>"No Data Found",
+        );
+     }
+
+     $this->output->set_content_type("application/json");
+     $this->output->set_output(json_encode($response));
+    }
     
 }
 

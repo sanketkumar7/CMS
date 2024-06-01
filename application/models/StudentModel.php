@@ -14,24 +14,15 @@ class StudentModel extends CI_Model
         $this->db->insert("studentdetails", $data);
     }
 
-    public function get_Last_Value_in_student_id()
+    function GenerateUniqueID()
     {
-        $this->db->select('id');
-        $this->db->from('studentdetails');
-        $this->db->order_by('id', 'DESC');
-        $this->db->limit(1);
-        $query = $this->db->get();
-        if ($query->num_rows() > 0) {
-            $row = $query->row();
-            $lastValue = $row->id;
-           $newvalue=$lastValue+1;
-           $newStdiD="STD".$newvalue;
-           return $newStdiD;
-        } else {
-            return null;
-        }
+        $randomNumber = mt_rand(100, 999);       
+        $randomAlphabeticCharacter1 = chr(rand(65, 90)); 
+        $randomAlphabeticCharacter2 = chr(rand(65, 90)); 
+        $randomAlphabeticCharacter3 = chr(rand(65, 90)); 
+        $shortIdentifier = $randomNumber . $randomAlphabeticCharacter1.$randomAlphabeticCharacter2;
+        return $shortIdentifier;
     }
-  
     public function getAllStudents()
     {
         $Data = $this->db->get('studentdetails');
@@ -212,5 +203,12 @@ class StudentModel extends CI_Model
         $this->db->where('semester', $semester);    
         $data = $this->db->get('generalproficiencycoursedata')->row();
         return $data;
+    }
+    
+    function updateFeeStatus($id)
+    {
+        $this->db->where("student_id",$id);
+        $this->db->set("collegefeesstatus","Complete");
+        $this->db->update("studentdetails");
     }
 }

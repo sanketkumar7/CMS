@@ -143,7 +143,7 @@
 							<li class="">
                             <a href="<?php echo base_url()?>index.php/SubjectController/Subject"><i class="fa fa-solid fa-book-open"></i> <span>Subject</span></a>
                         </li>
-							<li class="active">
+						<li class="active">
                             <a href="<?php echo base_url()?>index.php/Holiday/Holiday"><i class="fas fa-calendar-check"></i> <span>Holiday</span></a>
                         </li>
 						<li class="">
@@ -153,7 +153,13 @@
                             <a href="<?php echo base_url()?>index.php/TimeTableController/TimeTableDashboard"><i class="fa-solid fa-table"></i><span>Timetable</span></a>
                         </li>
 						<li class="">
-                            <a href="<?php echo base_url()?>index.php/Fees/FeesDashboard"><i class="fa-solid fa-money-bill"></i><span>Fees</span></a>
+                            <a href="<?php echo base_url()?>index.php/Fees/AddFees"><i class="fa-solid fa-money-bill"></i><span>Fees</span></a>
+                        </li>
+						<li class="">
+						<a href="<?php echo base_url()?>index.php/Library/LibraryDashboard"><i class="fa-solid fa-book"></i> <span>Library</span></a>
+                        </li>
+						<li class="">
+						<a href="<?php echo base_url()?>index.php/Salary/AdminSalaryDashboard"><i class="fa-solid fa-sack-dollar"></i> <span>Salary</span></a>
                         </li>
 						<li class="">
 						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>

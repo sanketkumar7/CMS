@@ -110,9 +110,9 @@
 // Array syntax
 // keyword(var,let,const) varname=[];
 const cars = ["Saab",
-10,
-"BMW",
-true];
+        10,
+        "BMW",
+        true];
 // console.log(cars);
 
 // const vehicle=[];
@@ -153,7 +153,7 @@ true];
 //         console.log(`Match Found at ${i}`);
 //         break;
 //     }
-    
+
 // }
 
 // const arr=["1","2","4","10","9"];
@@ -492,7 +492,7 @@ true];
 //     lname:" Doe",
 //     age: 25
 //   };
-  
+
 //   for (let x in person) {
 //     console.log(person[x]);
 //   }
@@ -552,7 +552,7 @@ true];
 //         console.log("This is my own function");
 //     }
 //   };
-  
+
 //   myObject.toString();
 
 
@@ -657,7 +657,7 @@ true];
 //     this.age = age;
 //     this.eyeColor = eyecolor;
 //   }
-  
+
 
 //   Without Prototype class
 //   Person.weight="40";
@@ -671,7 +671,7 @@ true];
 //     this.age = age;
 //     this.eyeColor = eyecolor;
 //   }
-  
+
 //   Person.prototype.nationality = "English";
 //   const shubh=new Person("Shubh","Chh","28","black");
 // //   shubh.nationality="indian";
@@ -744,7 +744,7 @@ true];
 // console.log(inputelments);
 // for(let i=0;i<inputelments.length;i++)
 // {
-   
+
 //     console.log( document.getElementsByName("name")[i])
 // }
 // const obj=[1,24,5,63,64];
@@ -928,16 +928,16 @@ true];
 
 // btn=document.getElementById("btn");
 // document.addEventListener('click',function() {
-    
+
 //     document.getElementById("note").style.fontSize="5rem";
 //     document.getElementById("note").setAttribute("onload","show()");
 // });
 
 
-        // let body = document.getElementById('body');
-        // body.addEventListener('keydown', (event) => {
-        //     console.log(`key=${event.key},code=${event.code}`);
-        // });
+// let body = document.getElementById('body');
+// body.addEventListener('keydown', (event) => {
+//     console.log(`key=${event.key},code=${event.code}`);
+// });
 
 // let counter=0;
 // const form=document.getElementById("form");
@@ -947,20 +947,129 @@ true];
 // console.log(event);
 // })
 
-const form=document.getElementById("form");
+// const form=document.getElementById("form");
+// console.log(form[0]);
 // form.addEventListener('submit',(event)=>{
 // event.preventDefault();
 // })
 
-console.log(form.elements["dept"].value);
+// console.log(form.elements["dept"].value);
 
-function showError(input, message) {
-	return showMessage(input, message, false);
-}
+// function showError(input, message) {
+// 	return showMessage(input, message, false);
+// }
 
-function showSuccess(input) {
-	return showMessage(input, "", true);
-}
+// function showSuccess(input) {
+// 	return showMessage(input, "", true);
+// }
 
-console.log(showError());
-console.log(showSuccess());
+// console.log(showError());
+// console.log(showSuccess());
+// const form=document.getElementById("form");
+// form.addEventListener('submit',function (event){
+//         console.log("inside");
+//         let mobilenumebr=document.getElementById("mnumber").value;
+//         if(mobilenumebr.length < 10)
+//         {
+//         document.getElementById("mobileerror").style.display='block';
+//         event.preventDefault();
+//         }
+//         else{
+//                 event.submit();
+//                 console.log("Form Submitted Successfully");
+//         }
+// })
+
+
+// let select=document.getElementById("select");
+// // select.options[0].value="Newval";
+// // select.options[0].text="Select Me";
+
+// const newOption = document.createElement('option');
+// newOption.innerText="D4";
+// select.add(newOption,select.options[0]);
+// // select.remove(4);
+// // select.remove(3);
+
+// let bt=document.getElementById("clk");
+// bt.addEventListener('click',(event)=>{
+//         select.remove(0);
+//         event.preventDefault();
+
+// });
+
+
+// Arrow Functions
+
+
+// Normal Function Definition
+// function GoodAfternoon()
+// {
+// console.log("Good Sfternoon");
+// }
+
+// // Function declaration using varaible
+// const Goodmorning=function()
+// {
+//         console.log("Goodmorning");
+// }
+
+// Goodmorning();
+
+
+// Arrow Functions
+
+// ()=>{
+// console.log("This is arrow function");
+// }
+
+
+// If Function has only one line of code
+// const fun=(param)=> console.log("This is arrow function"+param);
+// const fun=param=> console.log("This is arrow function"+param);
+
+// fun(44);
+
+
+
+// Map Filter Reduce
+
+// map(function(){
+// //function defn
+// });
+
+// const numbers = [65, 44, 12, 4];
+// let newArrn=[];
+
+
+// function multiply(currentvalue,index,array)
+// {
+//         return currentvalue * 10; 
+// }
+
+
+// for (i = 0; i < numbers.length; i++) {
+//      let mutiplicationvalue= multiply(numbers[i],i,numbers); 
+//      newArrn[i]=mutiplicationvalue;
+// }
+// console.log(newArrn);
+
+
+
+
+// const newArr = numbers.map((num) => {
+//         return num * 10;
+// });
+
+// console.log(newArr);
+
+
+// const ages = [32, 33, 16, 40];
+// const result = ages.filter(checkAdult);
+
+// function checkAdult(age) {
+//   return age >= 18;
+// }
+
+// console.log(result);
+

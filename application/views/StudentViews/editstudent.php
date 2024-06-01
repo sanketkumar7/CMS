@@ -71,23 +71,8 @@
 		//     }
 
 		// });
-		function showElement() {
-            var element = document.getElementById("sidebar");
-			console.log(document.getElementById("sidebar"));
-            element.style.display = "block";
-        }
-        setTimeout(showElement, 10);
-		document.addEventListener('DOMContentLoaded', function() {
-			document.getElementById('UpdateStudentDataform').addEventListener('submit', function(event) {
-				// Array of input field IDs
-				var fieldIds = ['student_first_name', 'student_middle_name', 'student_last_name', 'father_first_name', 'father_middle_name', 'father_last_name', 'mother_first_name', 'mother_middle_name', 'mother_last_name', 'student_date_of_birth', 'gender', 'nationality', 'email', 'parent_phone_number', 'student_phone_number', 'blood_group', 'religion', 'category', 'course', 'type', 'branch', 'year', 'admission_date', 'address', 'city', 'state', 'country'];
-				// Loop through each field ID
-				for (var i = 0; i < fieldIds.length; i++) {
-					validateField(fieldIds[i], event);
-					console.log(fieldIds[i]);
-				}
-			});
-		});
+	
+        
 
 		function validateField(fieldId, event) {
 			var field = document.getElementById(fieldId);
@@ -142,29 +127,10 @@
 			}
 		}
 	</script>
-	<style>
-		 .spinner {
-            display: block;
-        }
-		.body{
-			display: none;
-		}
-		#sidebar{
-			display: none;
-		}
-	</style>
-	 <script>
-        setTimeout(function() {
-            document.querySelector('.spinner').style.display = 'none';
-            document.querySelector('.body').style.display = 'block';
-            document.querySelector('#body').style.display = 'block';
-        }, 400); 
-    </script>
+	
+	 
 </head>
-<div class="spinner">
-        <!-- Add your spinner here -->
-        <p>Loading...</p>
-    </div>
+
 <body class="">
 
 
@@ -565,7 +531,7 @@
 										<div class="col-12 col-sm-4">
 											<div class="form-group local-forms">
 												<label>Category<span class="login-danger">*</span></label>
-												<select class="form-select" style="height:45px;font-size:15px !important;" name="category" id="category">
+												<select class="form-select" style="height:45px;font-size:15px !important;" name="category" id="category" onchange="getfees();">
 													<option value="NA">Please Select Category</option>
 													<option <?php echo ($student->category == 'General') ? 'selected' : ''; ?>>General</option>
 													<option <?php echo ($student->category == 'Obc') ? 'selected' : ''; ?>>Obc</option>
@@ -637,12 +603,7 @@
 													</p>
 												</div>
 											</div>
-											<div class="col-12 col-sm-4 d-none">
-												<div class="form-group local-forms">
-													<label><span class="login-danger">*</span></label>
-													<input class="form-control" type="text" name="department" value="<?php echo $dept->department;?>">
-												</div>
-											</div>
+										
 										<div class="col-12 col-sm-4">
 											<div class="form-group local-forms">
 												<label>Year<span class="login-danger">*</span></label>
@@ -671,7 +632,7 @@
 										<div class="col-12 col-sm-4">
 											<div class="form-group local-forms">
 												<label>Fees<span class="login-danger">*</span></label>
-												<input class="form-control" type="text" placeholder="eg. 70000" name="collegefees" id="collegefees" value="<?php echo $student->collegefees; ?>">
+												<input class="form-control" type="text" placeholder="eg. 70000" name="collegefees" id="collegefees" value="<?php echo $student->collegefees; ?>" readonly>
 												<div class="invalid-feedback" style="display:none;" id="collegefees_errormessage">
 													fees is Required.
 												</div>
@@ -1031,7 +992,35 @@ function adddisableopt()
 		{
 			document.getElementById("state").firstElementChild.disabled=true;
 		}
+
+		function getfees() {
+			document.getElementById("category").firstElementChild.setAttribute("disabled","true");
+			let category=document.getElementById("category").value;
+			fetch("getFeesforCategory?category="+category)
+				.then((response) => {
+					if(!response.ok)
+					{
+						return;
+					}
+					return response.json();
+				})
+				.then((data) => {
+					console.log(data);
+					if(data.message=="Data Found")
+					{
+						document.getElementById("collegefees").value=data.fees;
+					}
+					else{
+						return;
+					}
+				})
+				.catch((error)=>{
+console.log(error);
+				})
+		}
 	</script>
+
+	
 </body>
 
 

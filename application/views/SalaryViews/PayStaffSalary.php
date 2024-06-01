@@ -231,8 +231,7 @@
                         <div class="col">
                             <h3 class="page-title">Salary</h3>
                             <ul class="breadcrumb">
-                                <li><a href="AdminStaffDashboard">Staff</a></li>
-                                <li><a href="AdminSalaryDashboard">/ Salary</a></li>
+                                <li><a href="AdminSalaryDashboard">Salary</a></li>
                                 <li class="active">/ Pay Salary</li>
                             </ul>
                         </div>

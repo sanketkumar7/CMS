@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-	<title>Fees History</title>
+	<title>Pay Fees</title>
 
 	<!-- Favicon -->
 	<link rel="shortcut icon" href="<?php echo base_url() ?>assets/img/favicon.png">
@@ -217,11 +217,11 @@
 				<div class="page-header">
 					<div class="row align-items-center">
 						<div class="col">
-							<h3 class="page-title">Fees History</h3>
+							<h3 class="page-title">Pay Fees</h3>
 							<ul class="breadcrumb">
 								<li><a href="FeesDashboard">Fees</a></li>
 								<!-- <li class=""><a href="ManageDepartment">/ Manage Department</a></li> -->
-								<li class="breadcrumb-item active">/ Fees History</li>
+								<li class="breadcrumb-item active">/ Pay Fees</li>
 							</ul>
 						</div>
 					</div>
@@ -229,71 +229,54 @@
 				<!-- /Page Header -->
 
 				<div class="student-group-form">
+					<form method="post" action="payfees" id="PayFeesForm">
 					<div class="row">
-						<!-- <div class="col-lg-3 col-md-6">  
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search by ID ..." id="SearchById">
-								</div>
-							</div> -->
+						
 						<div class="col-lg-3 col-md-6">
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Search by ID ..." id="SearchByID" oninput="getFeesHistory();">
-								<p id="invalidid" class="text-danger" style="display:none;font-size:0.8rem;">Please Inter Valid ID</p>
+								<label for="Studentid" style="font-size:0.9rem">Student ID</label>
+								<input type="text" class="form-control" name="studentid" placeholder="Student ID ..." id="Studentid" oninput="getFeesHistory();">
+								<p id="sterror" class="text-danger" style="display:none;font-size:0.7rem;">Enter Valid Id</p>
 							</div>
 						</div>
-						<!-- <div class="col-lg-4 col-md-6">  
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search by Course ..." id="SearchByCourse">
-								</div>
-							</div> -->
+						<div class="col-lg-3 col-md-6">
+							<div class="form-group">
+							<label for="Studentid" style="font-size:0.9rem">Total Fees</label>
+								<input type="text" class="form-control" name="totalfees"
+								 placeholder="Total Fees" id="TotalFees" readonly>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="form-group">
+							<label for="Studentid" style="font-size:0.9rem">Total Fees Paid</label>
+								<input type="text" class="form-control" name="totalfeespaid"
+								 placeholder="Total Fees Paid" id="TotalFeesPaid" readonly>
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-md-6">
+							<div class="form-group">
+							<label for="Studentid" style="font-size:0.9rem">Remaining Fees</label>
+								<input type="text" class="form-control" name="remainingfees"
+								 placeholder="Remaining Fees" id="RemainingFees" readonly>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="form-group">
+							<label for="Studentid" style="font-size:0.9rem">Current Payment</label>
+								<input type="text" class="form-control" name="currentpayment"
+								 placeholder="Current Payment" id="currentpayment" onchange="checkcurrentpayvalue();" oninput="checkcurrentpayvalue();">
+								 <p id="currentpayment_errormessage" class="text-danger" style="display:none;font-size:0.8rem;">Current Pament is Required</p>
+							</div>
+						</div>
 						<div class="col-lg-2">
 							<div class="search-student-btn">
-								<button type="btn" class="btn btn-primary">Search</button>
+							<label for="Studentid" style="visibility:hidden">Remaining Fees</label>
+								<button id="paybtn" type="btn" class="btn btn-primary">Pay</button>
 							</div>
 						</div>
 					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-sm-12">
-
-						<div class="card card-table">
-							<div class="card-body">
-
-								<!-- Page Header -->
-								<div class="page-header">
-									<div class="row align-items-center">
-										<div class="col">
-											<h3 class="page-title">Fees History</h3>
-										</div>
-										<div class="col-auto text-end float-end ms-auto download-grp">
-											<a href="AddFees" class="btn btn-primary"><i class="fas fa-plus"></i></a>
-										</div>
-									</div>
-								</div>
-								<!-- /Page Header -->
-
-								<table id="DepartmentTable" class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
-									<thead class="student-thread">
-										<tr>
-											<th class="text-center">Sr No.</th>
-											<th class="text-center">Total Fees</th>
-											<th class="text-center">Total Fees Paid</th>
-											<th class="text-center">Current Payment</th>
-											<th class="text-center">Remaining</th>
-											<th class="text-center">Pay Date</th>
-										</tr>
-									</thead>
-									<tbody>
-
-										
-
-									</tbody>
-								</table>
-
-							</div>
-						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 
@@ -330,81 +313,87 @@
 	<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.min.js"></script>
 	<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.js"></script>
 	<script>
-		function getFeesHistory() {
-			let id = document.getElementById("SearchByID").value.trim();
-			if (id.length >= 5) {
-				fetch("GetFeesHistory?id=" + id)
-					.then((response) => {
-						if (!response.ok) {
-							return;
-						}
+		document.getElementById("paybtn").disabled=true;
+   document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('PayFeesForm').addEventListener('submit', function(event) {
+            var fieldIds = ['currentpayment'];
+            for (var i = 0; i < fieldIds.length; i++) {
+                validateField(fieldIds[i], event);
+            }
+        });
+    });
+	function validateField(fieldId, event) {
+        var field = document.getElementById(fieldId);
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                document.getElementById(fieldId + '_errormessage').style.display = 'block';
+                event.preventDefault();
+            }
+    }
+	function checkcurrentpayvalue() {
+    let currentpayment = parseInt(document.getElementById("currentpayment").value.trim(), 10);
+    let totalfees = parseInt(document.getElementById("TotalFees").value, 10);
+    let totalfeespaid = parseInt(document.getElementById("TotalFeesPaid").value, 10);
+    let remainingfees = parseInt(document.getElementById("RemainingFees").value, 10);
+	
+    if (isNaN(currentpayment)) currentpayment = 0;
+    if (isNaN(totalfees)) totalfees = 0;
+    if (isNaN(totalfeespaid)) totalfeespaid = 0;
 
-						return response.json();
-					})
-					.then((data) => {
-						if (data.message == "Data Found") {
-							document.getElementById("invalidid").style.display = "none";
-							fillTable(data.data);
+    if ((totalfeespaid + currentpayment) > totalfees) {
+        console.log("true");
+        document.getElementById("currentpayment").value = totalfees - totalfeespaid;
+    }
+}
 
-						} else {
-							let tableBody = document.querySelector("#DepartmentTable tbody");
-							tableBody.innerHTML = "";
-							document.getElementById("invalidid").style.display = "block";
-						}
-					})
-					.catch((error) => {
-						console.log(error);
-					});
+	function getFeesHistory()
+	{
+		let id=document.getElementById("Studentid").value.trim();
+		if(id.length>=5)
+		{
+			fetch("<?php echo base_url()."index.php/StudentController/"?>getstudentfees?id="+id)
+		.then((response)=>{
+			if(!response.ok)
+			{
+				return;
 			}
+			return response.json();
+		})
+		.then((data)=>{
+			if(data.message=="Student Found")
+			{
+				document.getElementById("TotalFees").value=data.data.totalfees;
+				document.getElementById("TotalFeesPaid").value=data.data.totalfeespaid;
+				document.getElementById("RemainingFees").value=data.data.remainingfees;
+				if(data.data.remainingfees==0)
+				{
+					document.getElementById("paybtn").disabled=true;
+					document.getElementById("currentpayment").setAttribute("readOnly","true");
+					return;
+				}
+				else{
+					document.getElementById("paybtn").disabled=false;
 
+				}
+				document.getElementById("sterror").style.display='none';
+			}
 			else{
-				document.getElementById("invalidid").style.display="none";
-				let tableBody = document.querySelector("#DepartmentTable tbody");
-				tableBody.innerHTML = "";
+				document.getElementById("sterror").style.display='block';
 			}
-
+		})
+		.catch((error)=>{
+			console.log(error);
+		})
 		}
-
-		function fillTable(data) {
-			let tableBody = document.querySelector("#DepartmentTable tbody");
-			tableBody.innerHTML = "";
-
-			data.forEach((item, index) => {
-				let row = document.createElement("tr");
-
-				let srNoCell = document.createElement("td");
-				srNoCell.classList.add("text-center");
-				srNoCell.textContent = index + 1;
-				row.appendChild(srNoCell);
-
-				let TotalFees = document.createElement("td");
-				TotalFees.classList.add("text-center");
-				TotalFees.textContent = item.totalfees;
-				row.appendChild(TotalFees);
-
-				let TotalFeesPaid = document.createElement("td");
-				TotalFeesPaid.classList.add("text-center");
-				TotalFeesPaid.textContent = item.totalfeespaid;
-				row.appendChild(TotalFeesPaid);
-
-				let CurrentPayment = document.createElement("td");
-				CurrentPayment.classList.add("text-center");
-				CurrentPayment.textContent = item.currentpayment;
-				row.appendChild(CurrentPayment);
-
-				let Remaining = document.createElement("td");
-				Remaining.classList.add("text-center");
-				Remaining.textContent = item.remainingfees;
-				row.appendChild(Remaining);
-
-				let DateCell = document.createElement("td");
-				DateCell.classList.add("text-center");
-				DateCell.textContent = item.date;
-				row.appendChild(DateCell);
-
-				tableBody.appendChild(row);
-			});
+		else{
+			document.getElementById("sterror").style.display='none';
+			document.getElementById("TotalFees").value="";
+			document.getElementById("TotalFeesPaid").value="";
+			document.getElementById("RemainingFees").value="";
+			document.getElementById("paybtn").disabled=true;
 		}
+	
+	}
 	</script>
 
 </body>

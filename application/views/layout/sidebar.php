@@ -158,7 +158,7 @@
 						<a href="<?php echo base_url()?>index.php/Library/LibraryDashboard"><i class="fa-solid fa-book"></i> <span>Library</span></a>
                         </li>
 						<li class="">
-						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-sack-dollar"></i> <span>Salary</span></a>
+						<a href="<?php echo base_url()?>index.php/Salary/AdminSalaryDashboard"><i class="fa-solid fa-sack-dollar"></i> <span>Salary</span></a>
                         </li>
 						<li class="">
 						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>

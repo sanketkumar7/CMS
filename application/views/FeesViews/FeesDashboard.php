@@ -67,7 +67,7 @@
 			}
 			function RedirecttoPayFees()
 			{
-				window.location.href="PayFees";
+				window.location.href="PayCollegeFees";
 			}
 		</script>
     </head>

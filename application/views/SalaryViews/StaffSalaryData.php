@@ -244,8 +244,7 @@
                         <div class="col">
                             <h3 class="page-title">Salary Data</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="AdminStaffDashboard">Staff </a></li>
-                                <li><a href="AdminSalaryDashboard">/ Salary</a></li>
+                                <li class="breadcrumb-item"><a href="AdminSalaryDashboard">Salary </a></li>
                                 <li class="active">/ Salary Data</li>
                             </ul>
                         </div>

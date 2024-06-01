@@ -1,6 +1,4 @@
-			<!-- Favicon -->
-	<link rel="shortcut icon" href="<?php echo base_url() ?>assets/img/favicon.png">
-		<!-- Sidebar -->
+			<!-- Sidebar -->
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu">
@@ -135,7 +133,7 @@
 						<li class="">  
 								<a href="<?php echo base_url()?>index.php/StudentController/index"><i class="fas fa-graduation-cap"></i><span>Student</span></a>
 							</li>
-							<li class="active">
+							<li class="">
                             <a href="<?php echo base_url()?>index.php/StaffController/AdminStaffDashboard"><i class="fa-solid fa-chalkboard-user"></i></i> <span>Staff</span></a>
                         </li>
 							<li class="">
@@ -159,12 +157,15 @@
 						<li class="">
 						<a href="<?php echo base_url()?>index.php/Library/LibraryDashboard"><i class="fa-solid fa-book"></i> <span>Library</span></a>
                         </li>
-						<li class="">
+						<li class="active">
 						<a href="<?php echo base_url()?>index.php/Salary/AdminSalaryDashboard"><i class="fa-solid fa-sack-dollar"></i> <span>Salary</span></a>
                         </li>
 						<li class="">
 						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
                         </li>
+						<!-- <li class="">
+						<a href="<?php echo base_url()?>index.php/StaffController/Logout"><i class="fa-solid fa-power-off"></i> <span>Logout</span></a>
+                        </li> -->
 						</ul>
 					</div>
                 </div>

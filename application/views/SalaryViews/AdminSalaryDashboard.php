@@ -300,14 +300,14 @@
 				<!-- Page Header -->
 				<div class="page-header">
 					<div class="row align-items-center">
-						<div class="col">
+						<!-- <div class="col">
 							<h3 class="page-title">Salary</h3>
 							<ul class="breadcrumb">
-								<li><a href="AdminStaffDashboard">Staff</a></li>
-								<li class="active">/ Salary</li>
+								<li><a href="AdminSalaryDashboard">Salary</a></li>
+								<li class="active">/ Salary Dashboard</li>
 
 							</ul>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -321,7 +321,7 @@
 										<!-- <h3 class="text-center text-white">50055</h3> -->
 									</div>
 									<div class="db-icon">
-										<img src="<?php echo base_url(); ?>assets/img/StaffModelImages/money.png" width="75" height="75" alt="Dashboard Icon">
+										<img src="<?php echo base_url(); ?>assets/img/StaffModelImages/money.png" width="55" height="55" alt="Dashboard Icon">
 									</div>
 								</div>
 							</div>
