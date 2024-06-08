@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://localhost:8080/CMSGit/CMS';
-// $config['base_url'] = 'https://b718-2405-201-1006-20b1-25c9-6196-c714-c087.ngrok-free.app/CMSGit/CMS';
+// $config['base_url'] = 'https://913f-2405-201-1006-209c-bc83-ad0-bedf-6de7.ngrok-free.app/CMSGit/CMS';
 
 /*
 |--------------------------------------------------------------------------

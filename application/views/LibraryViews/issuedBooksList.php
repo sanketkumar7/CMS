@@ -5,7 +5,7 @@
 <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <title>Departments</title>
+        <title>Issued Books</title>
 		
 		<!-- Favicon -->
         <link rel="shortcut icon" href="<?php echo base_url()?>assets/img/favicon.png">
@@ -86,7 +86,7 @@
 			</div>
 		</div>
 	<?php endif; ?>
-	<div class="modal fade contentmodal show" id="deleteModal" tabindex="-1" aria-modal="true" role="dialog">
+	<!-- <div class="modal fade contentmodal show" id="deleteModal" tabindex="-1" aria-modal="true" role="dialog">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content doctor-profile">
 				<div class="modal-header pb-0 border-bottom-0  justify-content-end">
@@ -104,7 +104,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
 		
@@ -279,11 +279,11 @@
 					<div class="page-header">
 						<div class="row align-items-center">
 							<div class="col">
-								<h3 class="page-title">Departments</h3>
+								<h3 class="page-title">Library</h3>
 								<ul class="breadcrumb">
-								<li><a href="Department">Department</a></li>
+								<li><a href="Department">Issue Books</a></li>
 									<!-- <li class=""><a href="ManageDepartment">/ Manage Department</a></li> -->
-									<li class="breadcrumb-item active">/ Manage Department</li>
+									<li class="breadcrumb-item active">/ Issued Books</li>
 								</ul>
 							</div>
 						</div>
@@ -325,49 +325,52 @@
 									<div class="page-header">
 										<div class="row align-items-center">
 											<div class="col">
-												<h3 class="page-title">Departments</h3>
+												<h3 class="page-title">Issued Books</h3>
 											</div>
 											<div class="col-auto text-end float-end ms-auto download-grp">
-												<a href="AddDepartment" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+												<a href="IssueBooks" class="btn btn-primary">Issue Book</a>
 											</div>
 										</div>
 									</div>
 									<!-- /Page Header -->
+								<div class="table">
+
 								
 									<table id="DepartmentTable" class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
 										<thead class="student-thread">
 											<tr>
-											
 												<th class="text-center">Sr No.</th>
-												<th class="text-center">Department Id</th>
-												<th class="text-center">Department Name</th>
-												<th class="text-center">Course</th>
+												<th class="text-center">Book Id</th>
+												<th class="text-center">Book Title</th>
+												<th class="text-center">Student Name</th>
+												<th class="text-center">Student Department</th>
+												<th class="text-center">Issue Date</th>
+												<th class="text-center">Due Date</th>
 												<!-- <th>Started Year</th> -->
-												<th class="text-center">No of Students</th>
 												<th class="text-center">Action</th>
 											</tr>
 										</thead>
 										<tbody>
-											<?php $i=0; foreach($department as $dept){?>
+											<?php $i=0; foreach($data as $dataa){?>
 											<tr>
 												<td class="text-center"><?php echo ++$i;?></td>
 												<td class="text-center">
-													<?php echo $dept->departmentid;?>
+													<?php echo $dataa->bookid;?>
 												</td>
-												<td class="text-center"><?php echo $dept->departmentname;?></td>
-												<td class="text-center"><?php echo $dept->course;?></td>
-												<td class="text-center"><?php echo $dept->studentscount;?></td>
+												<td class="text-center"><?php echo $dataa->booktitle;?></td>
+												<td class="text-center"><?php echo $dataa->studentname;?></td>
+												<td class="text-center"><?php echo $dataa->department;?></td>
+												<td class="text-center"><?php echo $dataa->issuedate;?></td>
+												<td class="text-center"><?php echo $dataa->duedate;?></td>
 												<td class="text-center">
 													<div>
-														<a href="ShowDepartmentData?id=<?php echo $dept->id;?>" class="btn btn-sm bg-success-light me-2">
+														<a href="ViewIssuedBookData?id=<?php echo $dataa->id;?>" class="btn btn-sm bg-success-light me-2">
 															<i class="feather-eye"></i>
 														</a>
-														<a href="EditDepartment?id=<?php echo $dept->id;?>" class="btn btn-sm bg-danger-light">
+														<!-- <a href="EditDepartment?id=<?php echo $dataa->id;?>" class="btn btn-sm bg-danger-light">
 															<i class="feather-edit"></i>
-														</a>
-														<button  class="btn btn-sm bg-danger-light" onclick="deleteModal(<?php echo $dept->id?>);">
-																<i class="feather-trash-2"></i>
-															</button>
+														</a> -->
+														
 													</div>
 												</td>
 											</tr>
@@ -375,7 +378,7 @@
 									
 										</tbody>
 									</table>
-									
+									</div>
 								</div>
 							</div>							
 						</div>					
@@ -413,11 +416,6 @@
 		<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.min.js"></script>
 	<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.js"></script>
 <script>
-	 function deleteModal(departmentid) {
-            const modalYesButton = document.getElementById('cancelsubjectbutton');
-                modalYesButton.href = 'DeleteDepartment?id=' + departmentid;
-    	$('#deleteModal').modal('show');
-		}
 
 		document.addEventListener('DOMContentLoaded', function() {
         var searchByIdInput = document.querySelector('#SearchById');

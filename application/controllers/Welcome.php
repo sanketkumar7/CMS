@@ -16,25 +16,8 @@ class Welcome extends CI_Controller
 		$this->load->view('layout/footer');
 	}
 
-	public function AdminDashboard()
+	function indexp()
 	{
-		$this->load->view('layout/header');
-		$this->load->view('layout/sidebar');
-		$this->load->view('AdminDashboard');
-		$this->load->view('layout/footer');
-	}
-	public function TeacherDashboard()
-	{
-		$this->load->view('layout/header');
-		$this->load->view('layout/sidebar');
-		$this->load->view('TeacherDashboard');
-		$this->load->view('layout/footer');
-	}
-	public function StudentDashboard()
-	{
-		$this->load->view('layout/header');
-		$this->load->view('layout/sidebar');
-		$this->load->view('StudentDashboard');
-		$this->load->view('layout/footer');
+		$this->load->view("sub");
 	}
 }

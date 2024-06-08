@@ -5,7 +5,7 @@
 <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <title>Departments</title>
+        <title>Books List</title>
 		
 		<!-- Favicon -->
         <link rel="shortcut icon" href="<?php echo base_url()?>assets/img/favicon.png">
@@ -41,11 +41,11 @@
   
 		<script>
 		document.addEventListener('DOMContentLoaded', function() {
-			var DepartmentSuccess = document.getElementById('toast-container');
-			if (DepartmentSuccess) {
-				DepartmentSuccess.style.display = 'block';
+			var BookAddSuccess = document.getElementById('toast-container');
+			if (BookAddSuccess) {
+				BookAddSuccess.style.display = 'block';
 				setTimeout(function() {
-					DepartmentSuccess.style.display = 'none';
+					BookAddSuccess.style.display = 'none';
 				}, 3000);
 			} 
 		});
@@ -53,36 +53,36 @@
     </head>
     <body>
 	<?php
-	$DepartmentAddSuccess = $this->session->flashdata('DepartmentAddSuccess');
-	$DepartmentUpdateSuccess = $this->session->flashdata('DepartmentUpdateSuccess');
-	$DepartmentDeleteSuccess = $this->session->flashdata('DepartmentDeleteSuccess');
-	$DepartmentDeleteError = $this->session->flashdata('DepartmentDeleteError');
+	$BookAddSuccess = $this->session->flashdata('BookAddSuccess');
+	$BookUpdateSuccess = $this->session->flashdata('BookUpdateSuccess');
+	$BookDeleteSuccess = $this->session->flashdata('BookDeleteSuccess');
+	$BookDeleteError = $this->session->flashdata('BookDeleteError');
 	?>
-	<?php if (isset($DepartmentAddSuccess)) : ?>
+	<?php if (isset($BookAddSuccess)) : ?>
 		<div id="toast-container" class="toast-container toast-top-right">
 			<div class="toast toast-success" aria-live="polite" style="display: block;">
-				<div class="toast-title text-center">Department Added Successfully</div>
+				<div class="toast-title text-center">Book Added Successfully</div>
 			</div>
 		</div>
 	<?php endif; ?>
-	<?php if (isset($DepartmentUpdateSuccess)) : ?>
+	<?php if (isset($BookUpdateSuccess)) : ?>
 		<div id="toast-container" class="toast-container toast-top-right">
 			<div class="toast toast-success" aria-live="polite" style="display: block;">
-				<div class="toast-title text-center">Department Updated Successfully</div>
+				<div class="toast-title text-center">Book Updated Successfully</div>
 			</div>
 		</div>
 	<?php endif; ?>
-	<?php if (isset($DepartmentDeleteSuccess)) : ?>
+	<?php if (isset($BookDeleteSuccess)) : ?>
 		<div id="toast-container" class="toast-container toast-top-right">
 			<div class="toast toast-success" aria-live="polite" style="display: block;">
-				<div class="toast-title text-center">Department Deleted Successfully</div>
+				<div class="toast-title text-center">Book Deleted Successfully</div>
 			</div>
 		</div>
 	<?php endif; ?>
-	<?php if (isset($DepartmentDeleteError)) : ?>
+	<?php if (isset($BookDeleteError)) : ?>
 		<div id="toast-container" class="toast-container toast-top-right">
 			<div class="toast toast-error" aria-live="polite" style="display: block;">
-				<div class="toast-title text-center">Department Cannot be Deleted as Students are Associated !</div>
+				<div class="toast-title text-center">Book Cannot be Deleted as Students are Associated !</div>
 			</div>
 		</div>
 	<?php endif; ?>
@@ -279,11 +279,10 @@
 					<div class="page-header">
 						<div class="row align-items-center">
 							<div class="col">
-								<h3 class="page-title">Departments</h3>
+								<h3 class="page-title">Books List</h3>
 								<ul class="breadcrumb">
-								<li><a href="Department">Department</a></li>
-									<!-- <li class=""><a href="ManageDepartment">/ Manage Department</a></li> -->
-									<li class="breadcrumb-item active">/ Manage Department</li>
+								<li><a href="Department">Books</a></li>
+									<li class="breadcrumb-item active">/ Books List</li>
 								</ul>
 							</div>
 						</div>
@@ -325,10 +324,10 @@
 									<div class="page-header">
 										<div class="row align-items-center">
 											<div class="col">
-												<h3 class="page-title">Departments</h3>
+												<h3 class="page-title">Books List</h3>
 											</div>
 											<div class="col-auto text-end float-end ms-auto download-grp">
-												<a href="AddDepartment" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+												<a href="AddBook" class="btn btn-primary"><i class="fas fa-plus"></i></a>
 											</div>
 										</div>
 									</div>
@@ -339,39 +338,42 @@
 											<tr>
 											
 												<th class="text-center">Sr No.</th>
-												<th class="text-center">Department Id</th>
-												<th class="text-center">Department Name</th>
-												<th class="text-center">Course</th>
+												<th class="text-center">Book Name</th>
+												<th class="text-center">Department</th>
+												<th class="text-center">Year</th>
+												<th class="text-center">count</th>
 												<!-- <th>Started Year</th> -->
-												<th class="text-center">No of Students</th>
 												<th class="text-center">Action</th>
 											</tr>
 										</thead>
 										<tbody>
-											<?php $i=0; foreach($department as $dept){?>
+											<?php $i=0;
+											if($books!=null)
+											{
+											foreach($books as $book){?>
 											<tr>
 												<td class="text-center"><?php echo ++$i;?></td>
 												<td class="text-center">
-													<?php echo $dept->departmentid;?>
+													<?php echo $book->booktitle;?>
 												</td>
-												<td class="text-center"><?php echo $dept->departmentname;?></td>
-												<td class="text-center"><?php echo $dept->course;?></td>
-												<td class="text-center"><?php echo $dept->studentscount;?></td>
+												<td class="text-center"><?php echo $book->department;?></td>
+												<td class="text-center"><?php echo $book->year;?></td>
+												<td class="text-center"><?php echo $book->count;?></td>
 												<td class="text-center">
 													<div>
-														<a href="ShowDepartmentData?id=<?php echo $dept->id;?>" class="btn btn-sm bg-success-light me-2">
+														<a href="ViewBook?id=<?php echo $book->id;?>" class="btn btn-sm bg-success-light me-2">
 															<i class="feather-eye"></i>
 														</a>
-														<a href="EditDepartment?id=<?php echo $dept->id;?>" class="btn btn-sm bg-danger-light">
+														<a href="EditBook?id=<?php echo $book->id;?>" class="btn btn-sm bg-danger-light">
 															<i class="feather-edit"></i>
 														</a>
-														<button  class="btn btn-sm bg-danger-light" onclick="deleteModal(<?php echo $dept->id?>);">
+														<button  class="btn btn-sm bg-danger-light" onclick="deleteModal(<?php echo $book->id?>);">
 																<i class="feather-trash-2"></i>
 															</button>
 													</div>
 												</td>
 											</tr>
-											<?php }?>
+											<?php }}?>
 									
 										</tbody>
 									</table>
@@ -391,7 +393,9 @@
 			
         </div>
 		<!-- /Main Wrapper -->
-	
+		<footer>
+					<p>COPYRIGHT © 2023 DREAMSTECHNOLOGIES.</p>					
+				</footer>
 		<!-- jQuery -->
         <script src="<?php echo base_url()?>assets/js/jquery-3.7.1.min.js"></script>
 		
@@ -413,9 +417,9 @@
 		<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.min.js"></script>
 	<script src="<?php echo base_url() ?>assets/plugins/toastr/toastr.js"></script>
 <script>
-	 function deleteModal(departmentid) {
+	 function deleteModal(bookid) {
             const modalYesButton = document.getElementById('cancelsubjectbutton');
-                modalYesButton.href = 'DeleteDepartment?id=' + departmentid;
+                modalYesButton.href = 'DeleteBook?id=' + bookid;
     	$('#deleteModal').modal('show');
 		}
 

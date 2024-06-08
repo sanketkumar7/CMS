@@ -1073,3 +1073,51 @@ const cars = ["Saab",
 
 // console.log(result);
 
+
+// Asynchronous Javascript
+
+
+// Callbacks
+
+// const myNumbers = [4, 1, -20, -7, 5, 9, -6];
+
+
+
+// function removeNeg(numbers, callback) {
+//         const myArray = [];
+//         for (const x of numbers) {
+//           if (callback(x)) {
+//             myArray.push(x);
+//           }
+//         }
+//         return myArray;
+//       }
+
+
+
+
+
+//       const posnumbers=removeneg(array,(x) => x >= 0);
+
+// Set Timeout
+// setTimeout(myFunction, 3000);
+
+// function myFunction() {
+// alert("This is a Time Out Function");
+// }
+
+// setTimeout(()=>{
+// console.log("Say HI");
+// },2000);
+
+
+// Set Interval
+// setInterval(myFunction, 10000);
+
+// function myFunction() {
+// console.log("This is a Noraml Function");
+// }
+
+// setInterval(()=>{
+// console.log("This is a arrow function");
+// },2000);
